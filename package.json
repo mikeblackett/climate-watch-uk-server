@@ -1,0 +1,31 @@
+{
+  "name": "climate-watch-uk-server",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Backend for the Climate Watch UK web app",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "start-cluster": "node climate-watch-uk-cluster.js",
+    "serve": "node ./test-database/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "~4.16.1",
+    "morgan": "~1.9.1",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.0",
+    "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.25.0",
+    "eslint-config-google": "^0.14.0",
+    "prettier": "2.7.1",
+    "sequelize-cli": "^6.5.2"
+  }
+}
