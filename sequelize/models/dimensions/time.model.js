@@ -11,6 +11,10 @@ const attributes = {
     allowNull: false,
     type: DataTypes.INTEGER(4),
   },
+  seasonYear: {
+    allowNull: false,
+    type: DataTypes.INTEGER(4),
+  },
   month: {
     allowNull: false,
     type: DataTypes.INTEGER(2),
