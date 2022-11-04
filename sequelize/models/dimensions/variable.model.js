@@ -11,6 +11,10 @@ const attributes = {
     primaryKey: true,
     type: DataTypes.STRING,
   },
+  label: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   description: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -19,17 +23,13 @@ const attributes = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  nameLong: {
+  longName: {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  unitId: {
+  units: {
     allowNull: false,
-    type: DataTypes.INTEGER,
-  },
-  startYear: {
-    allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   },
 }
 class Variable extends Model {}
@@ -47,9 +47,6 @@ function defineVariableModel(sequelize) {
   })
   Variable.associate = () => {
     const { Climate, Unit } = sequelize.models
-    Variable.belongsTo(Unit, {
-      foreignKey: 'unitId',
-    })
     Variable.hasMany(Climate, {
       foreignKey: 'variableId',
     })

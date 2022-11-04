@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize'
 import { defineClimateModel } from './models/facts/climate.model.js'
 import { defineRegionModel } from './models/dimensions/region.model.js'
 import { defineVariableModel } from './models/dimensions/variable.model.js'
-import { defineUnitModel } from './models/dimensions/unit.model.js'
 import { defineTimeModel } from './models/dimensions/time.model.js'
 
 const env = process.env.NODE_ENV || 'development'
@@ -21,7 +20,6 @@ const models = {
   Climate: defineClimateModel(sequelize),
   // Dimensions
   Variable: defineVariableModel(sequelize),
-  Unit: defineUnitModel(sequelize),
   Region: defineRegionModel(sequelize),
   Time: defineTimeModel(sequelize),
 }
