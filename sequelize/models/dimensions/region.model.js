@@ -22,6 +22,14 @@ const attributes = {
     type: DataTypes.STRING,
     unique: true,
   },
+  xCoord: {
+    allowNull: false,
+    type: DataTypes.DECIMAL,
+  },
+  yCoord: {
+    allowNull: false,
+    type: DataTypes.DECIMAL,
+  },
 }
 
 /**
