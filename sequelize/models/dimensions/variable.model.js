@@ -46,9 +46,15 @@ function defineVariableModel(sequelize) {
     timestamps: false,
   })
   Variable.associate = () => {
-    const { Climate, Unit } = sequelize.models
+    const { Climate, Time } = sequelize.models
     Variable.hasMany(Climate, {
       foreignKey: 'variableId',
+    })
+    Variable.hasOne(Time, {
+      foreignKey: 'startTimeId',
+    })
+    Variable.hasOne(Time, {
+      foreignKey: 'endTimeId',
     })
   }
   return Variable
