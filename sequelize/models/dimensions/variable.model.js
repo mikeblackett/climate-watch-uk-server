@@ -7,7 +7,7 @@ import { DataTypes, Model } from 'sequelize'
 
 const modelName = 'Variable'
 const attributes = {
-  slug: {
+  id: {
     primaryKey: true,
     type: DataTypes.STRING,
   },

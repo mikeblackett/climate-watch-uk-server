@@ -1,38 +1,34 @@
 import { Op } from 'sequelize'
 import sequelize from '../../sequelize/index.js'
 import { ApiError } from '../utilities/error.js'
+import { payload } from '../utilities/payload.js'
 
 const { Variable, Unit } = sequelize.models
 
 async function getAllVariablesApi(request, response, next) {
   try {
     const data = await Variable.findAll({
-      attributes: ['slug', 'name', 'nameLong'],
+      raw: true,
     })
-    response.json(data)
+    response.json(payload.success(data))
   } catch (error) {
     next(error)
   }
 }
 
-async function getVariableBySlugApi(request, response, next) {
-  const { slug } = request.params
+async function getVariableByIdApi(request, response, next) {
+  const { id } = request.params
   try {
-    const data = await Variable.findByPk(slug, {
-      attributes: {
-        include: [[sequelize.col('Unit.symbol'), 'symbol']],
-        exclude: ['unitId'],
-      },
-      include: { model: Unit, attributes: [], required: true },
+    const data = await Variable.findByPk(id, {
       raw: true,
     })
     if (data === null) {
-      throw new ApiError(`Invalid variable slug: ${slug}`, { status: 400 })
+      throw new ApiError(`Invalid variable id: ${id}`, { status: 400 })
     }
-    response.json(data)
+    response.json(payload.success(data))
   } catch (error) {
     next(error)
   }
 }
 
-export { getAllVariablesApi, getVariableBySlugApi }
+export { getAllVariablesApi, getVariableByIdApi }
