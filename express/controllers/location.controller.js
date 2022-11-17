@@ -2,11 +2,11 @@ import sequelize from '../../sequelize/index.js'
 import { ApiError } from '../utilities/error.js'
 import { payload } from '../utilities/payload.js'
 
-const { Space } = sequelize.models
+const { Location } = sequelize.models
 
-async function getAllSpacesApi(request, response, next) {
+async function getAllLocationsApi(request, response, next) {
   try {
-    const data = await Space.findAll({
+    const data = await Location.findAll({
       raw: true,
     })
     if (!data.length) {
@@ -20,7 +20,7 @@ async function getAllSpacesApi(request, response, next) {
 
 async function getAllCountriesApi(request, response, next) {
   try {
-    const data = await Space.findAll({
+    const data = await Location.findAll({
       where: {
         type: 'country',
       },
@@ -37,7 +37,7 @@ async function getAllCountriesApi(request, response, next) {
 
 async function getAllRegionsApi(request, response, next) {
   try {
-    const data = await Space.findAll({
+    const data = await Location.findAll({
       where: {
         type: 'region',
       },
@@ -52,13 +52,13 @@ async function getAllRegionsApi(request, response, next) {
   }
 }
 
-async function getSpaceByIdApi(request, response, next) {
+async function getLocationByIdApi(request, response, next) {
   const { id } = request.params
   try {
-    const data = await Space.findByPk(id, {
+    const data = await Location.findByPk(id, {
       // attributes: { exclude: ['parentId'] },
       // include: {
-      //   model: Space,
+      //   model: Location,
       //   as: 'parent',
       // },
     })
@@ -71,10 +71,10 @@ async function getSpaceByIdApi(request, response, next) {
   }
 }
 
-async function getSpaceChildrenApi(request, response, next) {
+async function getLocationChildrenApi(request, response, next) {
   const { id } = request.params
   try {
-    const parent = await Space.findByPk(id)
+    const parent = await Location.findByPk(id)
     if (parent === null) {
       throw new ApiError(`Invalid spatial id: '${id}'`, { status: 400 })
     }
@@ -90,9 +90,9 @@ async function getSpaceChildrenApi(request, response, next) {
 }
 
 export {
-  getAllSpacesApi,
+  getAllLocationsApi,
   getAllCountriesApi,
   getAllRegionsApi,
-  getSpaceByIdApi,
-  getSpaceChildrenApi,
+  getLocationByIdApi,
+  getLocationChildrenApi,
 }

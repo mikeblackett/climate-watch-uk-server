@@ -8,11 +8,11 @@ import { payload } from '../utilities/payload.js'
 const { Climate, Time } = sequelize.models
 
 async function getSnapshotMonthInYearApi(request, response, next) {
-  const { month, region, variable, year } = request.query
-  if (!region || !year || !month) {
+  const { month, location, variable, year } = request.query
+  if (!location || !year || !month) {
     return next(
       new ApiError(
-        'Calls to data/snapshot/month API must include region, month and year.',
+        'Calls to data/snapshot/month API must include location, month and year.',
         {
           status: 400,
         }
@@ -22,7 +22,7 @@ async function getSnapshotMonthInYearApi(request, response, next) {
   try {
     const data = await Climate.findAll({
       where: {
-        spaceId: region,
+        locationId: location,
         ...(variable && { variableId: variable }),
       },
       attributes: [['variableId', 'variable'], 'value'],
@@ -36,7 +36,7 @@ async function getSnapshotMonthInYearApi(request, response, next) {
     if (!data.length) {
       return response.json(payload.fail('No data found!'))
     }
-    response.json(payload.success({ region, year, month, list: data }))
+    response.json(payload.success({ location, year, month, list: data }))
   } catch (error) {
     next(error)
   }
@@ -47,11 +47,11 @@ async function getSnapshotSeasonInYearApi(request, response, next) {}
 async function getSnapshotSeasonInPeriodApi(request, response, next) {}
 
 async function getSnapshotYearApi(request, response, next) {
-  const { month, region, variable, year } = request.query
-  if (!region || !year) {
+  const { month, location, variable, year } = request.query
+  if (!location || !year) {
     return next(
       new ApiError(
-        'Calls to data/snapshot/year API must include region and year.',
+        'Calls to data/snapshot/year API must include location and year.',
         {
           status: 400,
         }
@@ -61,7 +61,7 @@ async function getSnapshotYearApi(request, response, next) {
   try {
     const data = await Climate.findAll({
       where: {
-        spaceId: region,
+        locationId: location,
         ...(variable && { variableId: variable }),
       },
       attributes: [
@@ -76,7 +76,7 @@ async function getSnapshotYearApi(request, response, next) {
       },
       raw: true,
     })
-    response.json(payload.success({ region, year, month, list: data }))
+    response.json(payload.success({ location, year, month, list: data }))
   } catch (error) {
     next(error)
   }

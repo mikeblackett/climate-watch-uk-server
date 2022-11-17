@@ -1,6 +1,6 @@
 /**
  * The Climate model represents a fact table in a star schema.
- * It contains the measured values of climatic variables indexed by the dimensions: Space, Time, Variable
+ * It contains the measured values of climatic variables indexed by the dimensions: Location, Time, Variable
  */
 import { DataTypes, Model } from 'sequelize'
 
@@ -10,7 +10,7 @@ const attributes = {
     type: DataTypes.DECIMAL,
   },
   // Foreign key
-  spaceId: {
+  locationId: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.STRING,
@@ -42,15 +42,15 @@ function defineClimateModel(sequelize) {
     timestamps: false,
   })
   Climate.associate = () => {
-    const { Space, Time, Variable } = sequelize.models
+    const { Location, Time, Variable } = sequelize.models
     Climate.belongsTo(Variable, {
       foreignKey: 'variableId',
     })
     Climate.belongsTo(Time, {
       foreignKey: 'timeId',
     })
-    Climate.belongsTo(Space, {
-      foreignKey: 'spaceId',
+    Climate.belongsTo(Location, {
+      foreignKey: 'locationId',
     })
   }
   return Climate

@@ -16,8 +16,8 @@ try {
   console.error(error)
 }
 
-const [space, time, variable, climate] = await Promise.all([
-  csvToEntries(join(dataDir, 'space/space.csv')),
+const [location, time, variable, climate] = await Promise.all([
+  csvToEntries(join(dataDir, 'location/location.csv')),
   csvToEntries(join(dataDir, 'time/time.csv')),
   csvToEntries(join(dataDir, 'variable/variable.csv')),
   Promise.all(climatePaths.map((path) => csvToEntries(path))),
@@ -30,9 +30,9 @@ async function sync() {
     console.log('Failed to sync test database', error)
   }
   try {
-    await sequelize.models.Space.bulkCreate(space)
+    await sequelize.models.Location.bulkCreate(location)
   } catch (error) {
-    console.log('Failed to create Space model', error)
+    console.log('Failed to create Location model', error)
   }
   try {
     await sequelize.models.Time.bulkCreate(time)

@@ -1,12 +1,12 @@
 /**
- * The Space model represents a dimension table in a star schema.
+ * The Location model represents a dimension table in a star schema.
  * It contains attributes describing spatial entities within the UK.
  * The `id` attribute is used as a foreign key to index the Climate model
  */
 import { DataTypes, Model } from 'sequelize'
 
-const modelName = 'Space'
-class Space extends Model {}
+const modelName = 'Location'
+class Location extends Model {}
 const attributes = {
   id: {
     type: DataTypes.STRING,
@@ -37,31 +37,31 @@ const attributes = {
 }
 
 /**
- * Defines the Space model.
+ * Defines the Location model.
  * @param {object} sequelize A Sequelize connection object
  * @returns {object} The Sequelize model
  */
-function defineSpaceModel(sequelize) {
-  Space.init(attributes, {
+function defineLocationModel(sequelize) {
+  Location.init(attributes, {
     sequelize,
     modelName,
     timestamps: false,
   })
-  Space.associate = () => {
+  Location.associate = () => {
     const { Climate } = sequelize.models
-    Space.belongsTo(Space, {
+    Location.belongsTo(Location, {
       as: 'parent',
       foreignKey: 'parentId',
     })
-    Space.hasMany(Space, {
+    Location.hasMany(Location, {
       foreignKey: 'parentId',
       as: 'children',
     })
-    Space.hasMany(Climate, {
-      foreignKey: 'spaceId',
+    Location.hasMany(Climate, {
+      foreignKey: 'locationId',
     })
   }
-  return Space
+  return Location
 }
 
-export { defineSpaceModel }
+export { defineLocationModel }

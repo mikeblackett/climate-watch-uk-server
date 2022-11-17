@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { Sequelize } from 'sequelize'
 import { defineClimateModel } from './models/facts/climate.model.js'
-import { defineSpaceModel } from './models/dimensions/space.model.js'
+import { defineLocationModel } from './models/dimensions/location.model.js'
 import { defineVariableModel } from './models/dimensions/variable.model.js'
 import { defineTimeModel } from './models/dimensions/time.model.js'
 import config from './config/sequelize.config.js'
@@ -15,7 +15,7 @@ const models = {
   Climate: defineClimateModel(sequelize),
   // Dimensions
   Variable: defineVariableModel(sequelize),
-  Space: defineSpaceModel(sequelize),
+  Location: defineLocationModel(sequelize),
   Time: defineTimeModel(sequelize),
 }
 // #endregion
