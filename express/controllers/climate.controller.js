@@ -19,17 +19,16 @@ async function getSnapshotMonthInYearApi(request, response, next) {
       )
     )
   }
-
   try {
     const data = await Climate.findAll({
       where: {
-        regionId: region,
+        spaceId: region,
         ...(variable && { variableId: variable }),
       },
       attributes: [['variableId', 'variable'], 'value'],
       include: {
         model: Time,
-        where: { year, month },
+        where: { year, monthNumber: month },
         attributes: [],
       },
       raw: true,
@@ -62,7 +61,7 @@ async function getSnapshotYearApi(request, response, next) {
   try {
     const data = await Climate.findAll({
       where: {
-        regionId: region,
+        spaceId: region,
         ...(variable && { variableId: variable }),
       },
       attributes: [
@@ -77,14 +76,7 @@ async function getSnapshotYearApi(request, response, next) {
       },
       raw: true,
     })
-    response.json({
-      status: 'success',
-      data: {
-        region,
-        year,
-        list: data,
-      },
-    })
+    response.json(payload.success({ region, year, month, list: data }))
   } catch (error) {
     next(error)
   }

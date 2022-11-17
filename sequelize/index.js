@@ -15,7 +15,7 @@ const models = {
   Climate: defineClimateModel(sequelize),
   // Dimensions
   Variable: defineVariableModel(sequelize),
-  Region: defineRegionModel(sequelize),
+  Space: defineSpaceModel(sequelize),
   Time: defineTimeModel(sequelize),
 }
 // #endregion
