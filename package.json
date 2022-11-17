@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "start-cluster": "node climate-watch-uk-cluster.js",
-    "serve": "node ./test-database/index.js"
+    "sync": "node ./sequelize/sync.js",
+    "start-cluster": "node climate-watch-uk-cluster.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

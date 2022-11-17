@@ -1,18 +1,13 @@
 import process from 'node:process'
 import { Sequelize } from 'sequelize'
 import { defineClimateModel } from './models/facts/climate.model.js'
-import { defineRegionModel } from './models/dimensions/region.model.js'
+import { defineSpaceModel } from './models/dimensions/space.model.js'
 import { defineVariableModel } from './models/dimensions/variable.model.js'
 import { defineTimeModel } from './models/dimensions/time.model.js'
-
+import config from './config/sequelize.config.js'
 const env = process.env.NODE_ENV || 'development'
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './test-database/test-db.sqlite',
-  logQueryParameters: true,
-  benchmark: true,
-})
+const sequelize = new Sequelize(config[env])
 
 // #region ---------------------------------------------------------------Models
 const models = {
