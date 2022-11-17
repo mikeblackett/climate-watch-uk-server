@@ -7,6 +7,14 @@ import { DataTypes, Model } from 'sequelize'
 
 const modelName = 'Time'
 const attributes = {
+  id: {
+    type: DataTypes.INTEGER(6),
+    primaryKey: true,
+  },
+  date: {
+    allowNull: false,
+    type: DataTypes.DATEONLY,
+  },
   year: {
     allowNull: false,
     type: DataTypes.INTEGER(4),
@@ -15,7 +23,7 @@ const attributes = {
     allowNull: false,
     type: DataTypes.INTEGER(4),
   },
-  month: {
+  monthNumber: {
     allowNull: false,
     type: DataTypes.INTEGER(2),
     validate: {
