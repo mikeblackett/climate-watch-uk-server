@@ -13,7 +13,7 @@ const attributes = {
   },
   endYear: {
     allowNull: false,
-    type: DataTypes.INTEGER(4),
+    type: DataTypes.INTEGER,
   },
   name: {
     type: DataTypes.STRING,
