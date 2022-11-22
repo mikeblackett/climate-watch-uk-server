@@ -7,11 +7,6 @@ class Location extends Model {
   }
 
   static get relationMappings() {
-    // const Observation = require('./observation.model.js')
-    // // (async () => {
-    // //   const model = await import('./observation.model.js')
-    // //   return model
-    // // })()
     return {
       children: {
         relation: Model.HasManyRelation,

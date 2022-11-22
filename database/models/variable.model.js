@@ -1,4 +1,5 @@
 import { Model } from 'objection'
+import { Observation } from './observation.model.js'
 
 class Variable extends Model {
   static get tableName() {
@@ -6,10 +7,6 @@ class Variable extends Model {
   }
 
   static get relationMappings() {
-    let Observation
-    ;(async () => {
-      Observation = await import('./observation.model.js')
-    })()
     return {
       observations: {
         relation: Model.HasManyRelation,
