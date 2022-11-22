@@ -10,7 +10,7 @@ async function csvToEntries(path, delimiter = ',') {
   const stream = fs.createReadStream(path).pipe(
     parse({
       delimiter,
-      columns: (row) => row.map(toCamelCase),
+      columns: true,
       cast: (value, context) => {
         if (context.header) return value
         if (value === '') return null

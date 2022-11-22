@@ -24,6 +24,7 @@ sequelize/config/*
 # DB
 *.sql
 *.sqlite
+knexfile.js
 
 # Python
 __pycache__
