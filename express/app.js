@@ -3,10 +3,10 @@
 import express from 'express'
 import cors from 'cors'
 import { addRoutes } from './routes/routes.js'
-import { payload } from './utilities/payload.js'
+import { Payload } from './utilities/payload.js'
 
 const app = express()
-
+const payload = new Payload()
 const corsOptions = {
   origin: 'http://localhost:8081',
 }
@@ -27,12 +27,12 @@ addRoutes(app)
 
 app.use((error, request, response, next) => {
   response.status(error.status || 500)
-  response.json(payload.error(error.message))
+  response.json(payload.error(error.message, response.statusCode))
 })
 
 app.use((request, response) => {
   response.status(404)
-  response.json(payload.error(`Not found! [404]`))
+  response.json(payload.fail({ resource: 'Not found!' }))
 })
 
 process.on('uncaughtException', (error) => {
