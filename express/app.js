@@ -23,13 +23,16 @@ app.get('/api', (request, response) => {
   response.json({ message: 'Welcome to Climate Watch UK API' })
 })
 
+// Handle requests with dedicated routers
 addRoutes(app)
 
+// Catch any errors...
 app.use((error, request, response, next) => {
   response.status(error.status || 500)
   response.json(payload.error(error.message, response.statusCode))
 })
 
+// Finally, unhandled requests fail with a 404 not found response
 app.use((request, response) => {
   response.status(404)
   response.json(payload.fail({ resource: 'Not found!' }))
