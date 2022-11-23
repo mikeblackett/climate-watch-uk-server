@@ -9,4 +9,4 @@ import { Observation } from './models/observation.model.js'
 const knex = Knex(knexConfig.development)
 Model.knex(knex)
 
-export { Location, Time, Variable, Observation }
+export { knex, Location, Time, Variable, Observation }

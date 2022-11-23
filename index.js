@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
+import { knex } from './database/index.js'
 import app from './express/app.js'
-import sequelize from './sequelize/index.js'
 import * as url from 'node:url'
 
 const PORT = process.env.PORT || 8080
@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8080
 async function checkDatabaseConnection() {
   console.log(`Checking database connection...`)
   try {
-    await sequelize.authenticate()
+    await knex.raw('SELECT 1 + 1 AS result')
     console.log('Database connection OK!')
   } catch (error) {
     console.error('Unable to connect to the database:', error.message)
@@ -19,13 +19,11 @@ async function checkDatabaseConnection() {
 
 async function startServer(port) {
   await checkDatabaseConnection()
-
   console.log(
     `Starting Climate Watch UK API at http://localhost:${port} in ${app.get(
       'env'
     )} mode`
   )
-
   app.listen(port, () => {
     console.log(`Climate Watch UK API started on port ${port}.'.`)
   })
