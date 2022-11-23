@@ -1,9 +1,9 @@
-import { Model } from 'objection'
+import { BaseModel } from './base.model.js'
 import { Time } from './time.model.js'
 import { Location } from './location.model.js'
 import { Variable } from './variable.model.js'
 
-class Observation extends Model {
+class Observation extends BaseModel {
   static get tableName() {
     return 'observations'
   }
