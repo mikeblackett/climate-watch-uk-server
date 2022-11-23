@@ -9,7 +9,7 @@ class Location extends BaseModel {
   static get relationMappings() {
     return {
       children: {
-        relation: Model.HasManyRelation,
+        relation: BaseModel.HasManyRelation,
         modelClass: Location,
         join: {
           from: 'locations.id',
@@ -17,7 +17,7 @@ class Location extends BaseModel {
         },
       },
       observation: {
-        relation: Model.HasManyRelation,
+        relation: BaseModel.HasManyRelation,
         modelClass: Observation,
         join: {
           from: 'locations.id',

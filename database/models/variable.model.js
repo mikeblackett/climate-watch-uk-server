@@ -9,7 +9,7 @@ class Variable extends BaseModel {
   static get relationMappings() {
     return {
       observations: {
-        relation: Model.HasManyRelation,
+        relation: BaseModel.HasManyRelation,
         modelClass: Observation,
         join: {
           from: 'variables.id',

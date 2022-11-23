@@ -9,7 +9,7 @@ class Time extends BaseModel {
   static get relationMappings() {
     return {
       observation: {
-        relation: Model.HasManyRelation,
+        relation: BaseModel.HasManyRelation,
         modelClass: Observation,
         join: {
           from: 'times.id',

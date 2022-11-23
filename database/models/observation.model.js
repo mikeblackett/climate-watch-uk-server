@@ -11,7 +11,7 @@ class Observation extends BaseModel {
   static get relationMappings() {
     return {
       times: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: Time,
         join: {
           from: 'observations.timeId',
@@ -19,7 +19,7 @@ class Observation extends BaseModel {
         },
       },
       locations: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: Location,
         join: {
           from: 'observations.locationId',
@@ -27,7 +27,7 @@ class Observation extends BaseModel {
         },
       },
       variables: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: Variable,
         join: {
           from: 'observations.variableId',
