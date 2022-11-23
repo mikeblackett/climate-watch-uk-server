@@ -1,7 +1,7 @@
 import { Model, snakeCaseMappers } from 'objection'
 
 export class BaseModel extends Model {
-  static columnNameMappers() {
+  static get columnNameMappers() {
     return snakeCaseMappers()
   }
 }
