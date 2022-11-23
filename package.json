@@ -7,6 +7,8 @@
   "private": true,
   "scripts": {
     "init-db": "node ./database/index.js",
+    "pg-start": "systemctl start postgresql",
+    "pg-stop": "systemctl stop postgresql",
     "start": "node index.js",
     "start-cluster": "node climate-watch-uk-cluster.js"
   },
