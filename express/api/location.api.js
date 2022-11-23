@@ -1,5 +1,4 @@
 import { Location } from '../../database/index.js'
-import { ApiError } from '../utilities/error.js'
 import { Payload } from '../utilities/payload.js'
 const payload = new Payload()
 
@@ -43,12 +42,7 @@ async function getLocationChildrenByIdApi(request, response, next) {
   const { id } = request.params
   try {
     const data = await Location.relatedQuery('children').for(id)
-    if (data === undefined) {
-      return response.json(
-        payload.fail({ id: `Unknown location id ('${id}')` })
-      )
-    }
-    response.json(payload.success(data))
+    response.json(payload.success({ list: data }))
   } catch (error) {
     next(error)
   }
