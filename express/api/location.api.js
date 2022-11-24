@@ -23,7 +23,7 @@ async function getLocationsByType(request, response, next) {
   try {
     const data = await query.where('type', type)
     if (!data.length) {
-      throw new BadRequestError(`location`, {
+      throw new BadRequestError(`location id`, {
         cause: { id: `Wrong location type '${type}'` },
       })
     }

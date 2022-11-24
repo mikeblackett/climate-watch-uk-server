@@ -33,7 +33,6 @@ app.use((error, request, response, next) => {
   if (error instanceof ClientError) {
     return response.json(payload.fail(error.cause))
   }
-  console.log(error)
   response.json(payload.error(error.message, response.statusCode))
 })
 
