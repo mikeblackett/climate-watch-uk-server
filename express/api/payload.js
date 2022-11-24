@@ -36,14 +36,14 @@ class Payload {
   success(data) {
     return {
       status: status.SUCCESS,
-      data,
+      data: { ...data },
     }
   }
 
   fail(data) {
     return {
       status: status.FAIL,
-      data,
+      data: { ...data },
     }
   }
 
