@@ -14,7 +14,7 @@ class Observation extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: Time,
         join: {
-          from: 'observations.timeId',
+          from: 'observations.time_id',
           to: 'times.id',
         },
       },
@@ -22,7 +22,7 @@ class Observation extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: Location,
         join: {
-          from: 'observations.locationId',
+          from: 'observations.location_id',
           to: 'locations.id',
         },
       },
@@ -30,7 +30,7 @@ class Observation extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: Variable,
         join: {
-          from: 'observations.variableId',
+          from: 'observations.variable_id',
           to: 'variables.id',
         },
       },
