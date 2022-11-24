@@ -1,12 +1,9 @@
 import express from 'express'
-import {
-  getAllVariablesApi,
-  getVariableByIdApi,
-} from '../controllers/variable.controller.js'
+import { getAllVariables, getVariableById } from '../api/variable.api.js'
 
 var router = express.Router()
 
-router.get('/', getAllVariablesApi)
-router.get('/:id', getVariableByIdApi)
+router.get('/', getAllVariables)
+router.get('/:id', getVariableById)
 
 export default router
