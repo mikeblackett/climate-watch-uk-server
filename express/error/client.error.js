@@ -27,11 +27,7 @@ class ClientError extends ApiError {
  * 400 Bad Request error
  * @extends ClientError
  */
-class BadRequestError extends ClientError {
-  constructor(request, { cause }) {
-    super(`${request} malformed!`, { cause })
-  }
-}
+class BadRequestError extends ClientError {}
 
 /**
  * 404 Not Found error
