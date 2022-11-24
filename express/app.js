@@ -3,7 +3,8 @@
 import express from 'express'
 import cors from 'cors'
 import { addRoutes } from './routes/routes.js'
-import { Payload } from './utilities/payload.js'
+import { Payload } from './api/payload.js'
+import { ClientError } from './error/client.error.js'
 
 const app = express()
 const payload = new Payload()
@@ -28,7 +29,11 @@ addRoutes(app)
 
 // Catch any errors...
 app.use((error, request, response, next) => {
-  response.status(error.status || 500)
+  response.status(error.statusCode || 500)
+  if (error instanceof ClientError) {
+    return response.json(payload.fail(error.cause))
+  }
+  console.log(error)
   response.json(payload.error(error.message, response.statusCode))
 })
 

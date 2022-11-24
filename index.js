@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
+import * as url from 'node:url'
 import { knex } from './database/index.js'
 import app from './express/app.js'
-import * as url from 'node:url'
+import { BadGatewayError } from './express/error/server.error.js'
 
 const PORT = process.env.PORT || 8080
 
@@ -12,8 +13,9 @@ async function checkDatabaseConnection() {
     await knex.raw('SELECT 1 + 1 AS result')
     console.log('Database connection OK!')
   } catch (error) {
-    console.error('Unable to connect to the database:', error.message)
-    process.exit(1)
+    throw new BadGatewayError(
+      `Unable to connect to the database: ${error.message}`
+    )
   }
 }
 
@@ -25,7 +27,7 @@ async function startServer(port) {
     )} mode`
   )
   app.listen(port, () => {
-    console.log(`Climate Watch UK API started on port ${port}.'.`)
+    console.log(`Climate Watch UK API listening on port ${port}.'.`)
   })
 }
 
