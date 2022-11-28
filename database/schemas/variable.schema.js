@@ -18,13 +18,13 @@ export function variableSchema(knex) {
       .foreign('start_time_id')
       .references('id')
       .inTable('times')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
     // Time ID foreign key of last observation
     table.integer('end_time_id').unsigned().notNullable()
     table
       .foreign('end_time_id')
       .references('id')
       .inTable('times')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
   })
 }

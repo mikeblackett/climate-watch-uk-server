@@ -10,20 +10,20 @@ export function observationSchema(knex) {
       .foreign('time_id')
       .references('id')
       .inTable('times')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
     // Location ID foreign key
     table.string('location_id').notNullable()
     table
       .foreign('location_id')
       .references('id')
       .inTable('locations')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
     // Variable ID foreign key
     table.string('variable_id').notNullable()
     table
       .foreign('variable_id')
       .references('id')
       .inTable('variables')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
   })
 }

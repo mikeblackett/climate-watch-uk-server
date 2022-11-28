@@ -8,7 +8,7 @@ export function locationSchema(knex) {
       .foreign('parent_id')
       .references('id')
       .inTable('locations')
-      .onDelete('SET NULL')
+      .onDelete('CASCADE')
     // Longitudinal center
     table.decimal('x_coord')
     // Latitudinal center
