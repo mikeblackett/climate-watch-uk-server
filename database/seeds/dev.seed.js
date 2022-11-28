@@ -15,9 +15,10 @@ try {
   console.error(error)
 }
 
-const [locations, times, variables, observations] = await Promise.all([
+const [locations, times, periods, variables, observations] = await Promise.all([
   csvToEntries(join(dataDir, 'location/location.csv')),
   csvToEntries(join(dataDir, 'time/time.csv')),
+  csvToEntries(join(dataDir, 'period/period.csv')),
   csvToEntries(join(dataDir, 'variable/variable.csv')),
   Promise.all(observationsPaths.map((path) => csvToEntries(path))),
 ])
@@ -34,6 +35,8 @@ export async function seed(knex) {
   await knex('locations').insert(locations)
   await knex('times').del()
   await knex('times').insert(times)
+  await knex('periods').del()
+  await knex('periods').insert(periods)
   await knex('variables').del()
   await knex('variables').insert(variables)
   await knex('observations').del()
