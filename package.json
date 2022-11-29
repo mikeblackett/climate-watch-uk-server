@@ -22,7 +22,8 @@
     "morgan": "~1.9.1",
     "objection": "^3.0.1",
     "pg": "^8.8.0",
-    "pg-hstore": "^2.3.4"
+    "pg-hstore": "^2.3.4",
+    "pg-types": "^4.0.0"
   },
   "devDependencies": {
     "csv": "^6.2.2",
