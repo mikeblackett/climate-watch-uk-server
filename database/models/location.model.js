@@ -16,7 +16,7 @@ class Location extends BaseModel {
           to: 'locations.parent_id',
         },
       },
-      observation: {
+      observations: {
         relation: BaseModel.HasManyRelation,
         modelClass: Observation,
         join: {
