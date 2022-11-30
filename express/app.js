@@ -15,6 +15,13 @@ app.use(cors(corsOptions))
 
 // app.use(logger('dev'))
 
+app.set('json replacer', function (key, value) {
+  if (this[key] instanceof Date) {
+    value = this[key].toLocaleDateString()
+  }
+  return value
+})
+
 // Only during dev...
 app.get('/', (request, response) => {
   response.redirect('/api')
