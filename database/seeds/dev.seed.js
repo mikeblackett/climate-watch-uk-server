@@ -23,8 +23,8 @@ const [locations, times, periods, variables, observations] = await Promise.all([
   Promise.all(observationsPaths.map((path) => csvToEntries(path))),
 ])
 
-// Add the last 10 years data... 12months * 18 locations * 10 years = 2160
-const observationsSliced = observations.map((arr) => arr.slice(-2160, -1))
+// Add the last 20 years data... 24months * 18 locations * 10 years = 4320
+const observationsSliced = observations.map((arr) => arr.slice(-4320, -1))
 
 /**
  * @param { import("knex").Knex } knex
