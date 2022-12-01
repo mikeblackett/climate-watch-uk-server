@@ -12,19 +12,5 @@ export function variableSchema(knex) {
     table.string('name').notNullable()
     // HadGrid-UK variable units
     table.string('units')
-    // Time ID foreign key of first observation
-    table.integer('start_time_id').unsigned().notNullable()
-    table
-      .foreign('start_time_id')
-      .references('id')
-      .inTable('times')
-      .onDelete('CASCADE')
-    // Time ID foreign key of last observation
-    table.integer('end_time_id').unsigned().notNullable()
-    table
-      .foreign('end_time_id')
-      .references('id')
-      .inTable('times')
-      .onDelete('CASCADE')
   })
 }
