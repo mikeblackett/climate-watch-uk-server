@@ -1,12 +1,10 @@
 import express from 'express'
-import {
-  getAllTimesApi,
-  getTimesByIdApi,
-} from '../controllers/time.controller.js'
+import { getAllTimes, getTimesById, getAllYears } from '../api/time.api.js'
 
 var router = express.Router()
 
-router.get('/', getAllTimesApi)
-router.get('/:id', getTimesByIdApi)
+router.get('/', getAllTimes)
+// router.get('/:id', getTimesById)
+router.get('/years', getAllYears)
 
 export default router
