@@ -7,47 +7,49 @@ const payload = new Payload()
 
 function firstYear(location) {
   return Observation.query()
-    .alias('o')
+    .alias('y')
     .select(
-      'variable_id',
+      'y.variable_id',
       raw(`extract(year from min(t.date))`).as('first_year')
     )
-    .innerJoin('times as t', 'o.time_id', 't.id')
-    .where('location_id', location)
-    .groupBy('variable_id')
+    .innerJoin('times as t', 'y.time_id', 't.id')
+    .where('y.location_id', location)
+    .groupBy('y.variable_id')
 }
 
 function annualAverages(location) {
   return Observation.query()
+    .alias('o')
     .select(
-      'variable_id',
-      'location_id',
-      'times.year as year',
+      'o.variable_id',
+      'o.location_id',
+      't.year',
       raw(
-        `dense_rank() over (partition by variable_id, location_id order by avg(value) desc)`
+        `dense_rank() over (partition by o.variable_id, o.location_id order by avg(o.value) desc)`
       ).as('rank'),
-      raw(`round(avg(value), 1) as value`)
+      raw(`round(avg(o.value), 1)`).as('value')
     )
-    .joinRelated('times')
-    .groupByRaw('year, variable_id, location_id')
-    .where('location_id', location)
+    .joinRelated('times', { alias: 't' })
+    .groupByRaw('t.year, o.variable_id, o.location_id')
+    .where('o.location_id', location)
 }
 
 function monthlyValues(location, month_number) {
   return Observation.query()
+    .alias('o')
     .select(
-      'variable_id',
-      'location_id',
-      'value',
-      'times.year as year',
-      'times.month_number as month_number',
+      'o.variable_id',
+      'o.location_id',
+      'o.value',
+      't.year',
+      't.month_number',
       raw(
-        `dense_rank() over (partition by month_number, variable_id, location_id order by value desc)`
+        `dense_rank() over (partition by t.month_number, o.variable_id, o.location_id order by o.value desc)`
       ).as('rank')
     )
-    .joinRelated('times')
-    .where('location_id', location)
-    .where('month_number', month_number)
+    .joinRelated('times', { alias: 't' })
+    .where('o.location_id', location)
+    .where('t.month_number', month_number)
 }
 
 function countYears(location) {
@@ -70,39 +72,24 @@ async function getClimateSummary(request, response, next) {
         },
       })
     }
-    let query = Location.query()
-      .alias('l')
-      .select([
-        'l.id as id',
-        'o.variable_id as variable_id',
-        'o.year as year',
-        'o.rank as rank',
-        'o.value as value',
-        'y.first_year as first_year',
-      ])
-      .where('year', year)
-
+    let query = Observation.query().select([
+      'o.location_id',
+      'o.variable_id',
+      'o.year',
+      'o.rank',
+      'o.value',
+      'y.first_year',
+    ])
     if (month) {
       query = query
-        .innerJoin(
-          monthlyValues(location, month).as('o'),
-          'l.id',
-          'o.location_id'
-        )
-        .innerJoin(
-          firstYear(location).as('y'),
-          'o.variable_id',
-          'y.variable_id'
-        )
+        .select('o.month_number')
+        .from(monthlyValues(location, month).as('o'))
     } else {
-      query = query
-        .innerJoin(annualAverages(location).as('o'), 'l.id', 'o.location_id')
-        .innerJoin(
-          firstYear(location).as('y'),
-          'o.variable_id',
-          'y.variable_id'
-        )
+      query = query.from(annualAverages(location).as('o'))
     }
+    query = query
+      .innerJoin(firstYear(location).as('y'), 'o.variable_id', 'y.variable_id')
+      .where('year', year)
     const data = await query
     response.json(payload.success({ list: data }))
   } catch (error) {
