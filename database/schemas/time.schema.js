@@ -1,4 +1,4 @@
-export function timeSchema(knex) {
+export async function timeSchema(knex) {
   return knex.schema.createTable('times', function (table) {
     // ID composed of year+month i.e. 202101
     table.integer('id').unsigned().primary()

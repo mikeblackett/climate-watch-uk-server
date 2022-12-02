@@ -1,4 +1,4 @@
-export function variableSchema(knex) {
+export async function variableSchema(knex) {
   return knex.schema.createTable('variables', function (table) {
     // HadGrid-UK variable code
     table.string('id').primary()

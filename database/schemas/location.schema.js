@@ -1,4 +1,4 @@
-export function locationSchema(knex) {
+export async function locationSchema(knex) {
   return knex.schema.createTable('locations', function (table) {
     // Pseudo ISO 1366 country code
     table.string('id', 6).primary()

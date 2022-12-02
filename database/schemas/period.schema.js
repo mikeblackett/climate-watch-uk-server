@@ -1,4 +1,4 @@
-export function periodSchema(knex) {
+export async function periodSchema(knex) {
   return knex.schema.createTable('periods', function (table) {
     // ID composed of start_year+end_year i.e. 19912020
     table.integer('id').unsigned().primary()

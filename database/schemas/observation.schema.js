@@ -1,4 +1,4 @@
-export function observationSchema(knex) {
+export async function observationSchema(knex) {
   return knex.schema.createTable('observations', function (table) {
     // Auto-incrementing primary key
     table.increments('id')
