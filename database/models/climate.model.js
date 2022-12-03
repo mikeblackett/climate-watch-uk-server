@@ -1,28 +1,19 @@
 import { BaseModel } from './base.model.js'
-import { Time } from './time.model.js'
 import { Location } from './location.model.js'
 import { Variable } from './variable.model.js'
 
-class Observation extends BaseModel {
+class Climate extends BaseModel {
   static get tableName() {
-    return 'observations'
+    return 'climates'
   }
 
   static get relationMappings() {
     return {
-      times: {
-        relation: BaseModel.BelongsToOneRelation,
-        modelClass: Time,
-        join: {
-          from: 'observations.time_id',
-          to: 'times.id',
-        },
-      },
       locations: {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: Location,
         join: {
-          from: 'observations.location_id',
+          from: `${this.tableName}.location_id`,
           to: 'locations.id',
         },
       },
@@ -30,7 +21,7 @@ class Observation extends BaseModel {
         relation: BaseModel.BelongsToOneRelation,
         modelClass: Variable,
         join: {
-          from: 'observations.variable_id',
+          from: `${this.tableName}.variable_id`,
           to: 'variables.id',
         },
       },
@@ -38,4 +29,16 @@ class Observation extends BaseModel {
   }
 }
 
-export { Observation }
+class SeasonalClimate extends Climate {
+  static get tableName() {
+    return 'seasonal_climates'
+  }
+}
+
+class AnnualClimate extends Climate {
+  static get tableName() {
+    return 'annual_climates'
+  }
+}
+
+export { Climate, SeasonalClimate, AnnualClimate }
