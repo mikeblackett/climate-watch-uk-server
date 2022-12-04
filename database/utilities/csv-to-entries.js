@@ -2,9 +2,6 @@ import { basename } from 'node:path'
 import fs from 'fs'
 import { parse } from 'csv-parse'
 
-const toCamelCase = (str) =>
-  str.replace(/(_[a-z])/gi, ($1) => $1.toUpperCase().replace('_', ''))
-
 async function csvToEntries(path, delimiter = ',') {
   let data = []
   const stream = fs.createReadStream(path).pipe(
