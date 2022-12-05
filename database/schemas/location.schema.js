@@ -15,5 +15,7 @@ export async function locationSchema(knex) {
     table.decimal('y_coord')
     // Common name
     table.string('name').notNullable()
+    // Country/region
+    table.string('type')
   })
 }

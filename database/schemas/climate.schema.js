@@ -3,6 +3,8 @@ async function climateSchema(knex) {
     table.increments('id')
     table.decimal('value')
     table.smallint('year')
+    table.smallint('season_year')
+    table.string('season')
     table.smallint('month')
     table.string('location_id').notNullable()
     table
@@ -21,11 +23,10 @@ async function climateSchema(knex) {
 
 async function seasonalClimateSchema(knex) {
   return knex.schema
-    .createTableLike('seasonal_climates', 'climates', function (table) {
-      table.string('season')
-    })
+    .createTableLike('seasonal_climates', 'climates')
     .alterTable('seasonal_climates', function (table) {
       table.dropColumn('month')
+      table.dropColumn('season_year')
     })
 }
 
@@ -34,6 +35,7 @@ async function annualClimateSchema(knex) {
     .createTableLike('annual_climates', 'climates')
     .alterTable('annual_climates', function (table) {
       table.dropColumn('month')
+      table.dropColumn('season_year')
     })
 }
 
