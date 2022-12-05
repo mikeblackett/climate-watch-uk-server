@@ -1,6 +1,5 @@
 import { BaseModel } from './base.model.js'
-import { Climate } from './annual-climate.model.js'
-import { SeasonalClimate } from './seasonal-climate.model.js'
+import { Climate, SeasonalClimate, AnnualClimate } from './climate.model.js'
 
 class Variable extends BaseModel {
   static get tableName() {

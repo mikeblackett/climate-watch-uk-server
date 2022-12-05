@@ -3,10 +3,8 @@ import { Model } from 'objection'
 import pg from 'pg'
 import knexConfig from './knexfile.js'
 import { Location } from './models/location.model.js'
-import { Time } from './models/time.model.js'
 import { Variable } from './models/variable.model.js'
-import { Observation } from './models/observation.model.js'
-import { Period } from './models/period.model.js'
+import { Climate } from './models/climate.model.js'
 import { PerformanceObserver, performance } from 'perf_hooks'
 
 const env = process.env.NODE_ENV || 'development'
@@ -44,4 +42,4 @@ if (env === 'development') {
   })()
 }
 
-export { knex, Location, Time, Variable, Observation, Period }
+export { knex, Location, Variable, Climate }
