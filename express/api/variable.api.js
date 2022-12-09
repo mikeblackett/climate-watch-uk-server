@@ -1,7 +1,7 @@
 import { raw } from 'objection'
 import { Variable } from '../../database/index.js'
 import { NotFoundError } from '../error/client.error.js'
-import { Payload } from './payload.js'
+import { Payload } from './utilities/Payload.js'
 
 const payload = new Payload()
 

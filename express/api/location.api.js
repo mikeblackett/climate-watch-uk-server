@@ -1,5 +1,5 @@
 import { Location } from '../../database/index.js'
-import { Payload } from './payload.js'
+import { Payload } from './utilities/Payload.js'
 import { BadRequestError, NotFoundError } from '../error/client.error.js'
 
 const payload = new Payload()
