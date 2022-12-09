@@ -1,30 +1,25 @@
 import { readdir } from 'node:fs/promises'
-import { join } from 'node:path'
+import { resolve } from 'node:path'
 import { csvToEntries } from '../utilities/csv-to-entries.js'
 
-const dataDir =
-  '/home/mikeblackett/Documents/Dev/climate-watch-uk-server/python/data/processed'
-
-const observationsDir = join(dataDir, 'climate')
-const observationsPaths = []
+const dataDir = '../python/data/processed'
+const climateDir = resolve(dataDir, 'climate/monthly')
+const climatesPaths = []
 try {
-  const observationsFiles = await readdir(observationsDir)
-  for (const file of observationsFiles)
-    observationsPaths.push(join(observationsDir, file))
+  const files = await readdir(climateDir)
+  for (const file of files) climatesPaths.push(resolve(climateDir, file))
 } catch (error) {
   console.error(error)
 }
 
-const [locations, times, periods, variables, observations] = await Promise.all([
-  csvToEntries(join(dataDir, 'location/location.csv')),
-  csvToEntries(join(dataDir, 'time/time.csv')),
-  csvToEntries(join(dataDir, 'period/period.csv')),
-  csvToEntries(join(dataDir, 'variable/variable.csv')),
-  Promise.all(observationsPaths.map((path) => csvToEntries(path))),
+const [locations, variables, climates] = await Promise.all([
+  csvToEntries(resolve(dataDir, 'location/location.csv')),
+  csvToEntries(resolve(dataDir, 'variable/variable.csv')),
+  Promise.all(climatesPaths.map((path) => csvToEntries(path))),
 ])
 
 // Add the last 20 years data... 24months * 18 locations * 10 years = 4320
-const observationsSliced = observations.map((arr) => arr.slice(-4320, -1))
+const climatesSliced = climates.map((arr) => arr.slice(-4320, -1))
 
 /**
  * @param { import("knex").Knex } knex
@@ -33,16 +28,12 @@ const observationsSliced = observations.map((arr) => arr.slice(-4320, -1))
 export async function seed(knex) {
   await knex('locations').del()
   await knex('locations').insert(locations)
-  await knex('times').del()
-  await knex('times').insert(times)
-  await knex('periods').del()
-  await knex('periods').insert(periods)
   await knex('variables').del()
   await knex('variables').insert(variables)
-  await knex('observations').del()
+  await knex('climates').del()
   await Promise.all(
-    observationsSliced.map(async (v) => {
-      await knex('observations').insert(v)
+    climatesSliced.map(async (v) => {
+      await knex('climates').insert(v)
     })
   )
 }
