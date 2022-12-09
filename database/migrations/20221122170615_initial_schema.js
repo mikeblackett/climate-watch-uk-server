@@ -1,10 +1,6 @@
 import { locationSchema } from '../schemas/location.schema.js'
 import { variableSchema } from '../schemas/variable.schema.js'
-import {
-  climateSchema,
-  seasonalClimateSchema,
-  annualClimateSchema,
-} from '../schemas/climate.schema.js'
+import { climateSchema } from '../schemas/climate.schema.js'
 
 /**
  * @param { import("knex").Knex } knex
@@ -15,8 +11,6 @@ export function up(knex) {
     locationSchema(knex),
     variableSchema(knex),
     climateSchema(knex),
-    seasonalClimateSchema(knex),
-    annualClimateSchema(knex),
   ])
 }
 
@@ -29,6 +23,4 @@ export function down(knex) {
     .dropTableIfExists('locations')
     .dropTableIfExists('variables')
     .dropTableIfExists('climates')
-    .dropTableIfExists('seasonal_climates')
-    .dropTableIfExists('annual_climates')
 }

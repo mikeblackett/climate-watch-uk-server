@@ -21,22 +21,4 @@ async function climateSchema(knex) {
   })
 }
 
-async function seasonalClimateSchema(knex) {
-  return knex.schema
-    .createTableLike('seasonal_climates', 'climates')
-    .alterTable('seasonal_climates', function (table) {
-      table.dropColumn('month')
-      table.dropColumn('season_year')
-    })
-}
-
-async function annualClimateSchema(knex) {
-  return knex.schema
-    .createTableLike('annual_climates', 'climates')
-    .alterTable('annual_climates', function (table) {
-      table.dropColumn('month')
-      table.dropColumn('season_year')
-    })
-}
-
-export { climateSchema, annualClimateSchema, seasonalClimateSchema }
+export { climateSchema }

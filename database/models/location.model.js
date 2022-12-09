@@ -1,5 +1,5 @@
 import { BaseModel } from './base.model.js'
-import { Climate, SeasonalClimate, AnnualClimate } from './climate.model.js'
+import { Climate } from './climate.model.js'
 
 class Location extends BaseModel {
   static get tableName() {
@@ -22,22 +22,6 @@ class Location extends BaseModel {
         join: {
           from: 'locations.id',
           to: 'climates.location_id',
-        },
-      },
-      seasonal_climates: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: SeasonalClimate,
-        join: {
-          from: 'locations.id',
-          to: 'seasonal_climates.location_id',
-        },
-      },
-      annual_climates: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: AnnualClimate,
-        join: {
-          from: 'locations.id',
-          to: 'annual_climates.location_id',
         },
       },
     }
