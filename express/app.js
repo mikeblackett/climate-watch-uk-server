@@ -3,7 +3,7 @@
 import express from 'express'
 import cors from 'cors'
 import { addRoutes } from './routes/routes.js'
-import { Payload } from './api/payload.js'
+import { Payload } from './api/utilities/Payload.js'
 import { ClientError } from './error/client.error.js'
 
 const app = express()
@@ -21,6 +21,9 @@ app.set('json replacer', function (key, value) {
   }
   return value
 })
+
+// Replace qs with node querystring
+app.set('query parser', 'simple')
 
 // Only during dev...
 app.get('/', (request, response) => {
