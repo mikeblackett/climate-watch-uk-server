@@ -1,8 +1,7 @@
 import express from 'express'
-import { getClimateSummary } from '../api/data.api.js'
+import { getSnapshot, snapshotValidator } from '../api/snapshot.api.js'
 
 var router = express.Router()
-
-router.get('/summary', getClimateSummary)
+router.get('/snapshot', snapshotValidator(), getSnapshot)
 
 export default router
