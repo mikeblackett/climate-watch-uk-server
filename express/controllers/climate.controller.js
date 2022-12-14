@@ -7,7 +7,13 @@ function validate(method) {
   let validator
   switch (method) {
     case 'getSnapshot':
-      validator = query('year').exists().withMessage('Must specify a year')
+      validator = [
+        query('year').exists().withMessage('Must specify a year'),
+        query('month')
+          .if(query('month').exists())
+          .isInt({ min: 1, max: 12 })
+          .withMessage('Month must be in range 1-12'),
+      ]
       break
     default:
       return requestValidator
