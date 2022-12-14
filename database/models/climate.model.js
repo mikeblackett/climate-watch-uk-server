@@ -64,8 +64,13 @@ class Climate extends BaseModel {
         if (rank) {
           query.select(
             raw(
-              `dense_rank() over (partition by ?, ? order by ? desc) as rank`,
-              [ref('variable_id'), ref('location_id'), ref('value')]
+              `dense_rank() over (partition by ?, ?, ? order by ? desc) as rank`,
+              [
+                ref('month'),
+                ref('variable_id'),
+                ref('location_id'),
+                ref('value'),
+              ]
             )
           )
         }
