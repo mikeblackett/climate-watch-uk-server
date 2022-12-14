@@ -26,6 +26,15 @@ class Location extends BaseModel {
       },
     }
   }
+
+  static get modifiers() {
+    return {
+      selectDefault(query) {
+        const { ref } = Location
+        return query.select([ref('id'), ref('parent_id'), ref('name')])
+      },
+    }
+  }
 }
 
 export { Location }
