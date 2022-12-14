@@ -1,34 +1,39 @@
-import { Op } from 'sequelize'
-import sequelize from '../../sequelize/index.js'
-import { ApiError } from '../utilities/error.js'
-import { payload } from '../utilities/payload.js'
+import { param } from 'express-validator'
+import { requestValidator } from '../middlewares/request-validator.js'
+import variableServices from '../services/variable.services.js'
+import jsend from '../utilities/jsend.js'
 
-const { Variable, Unit } = sequelize.models
+function validate(method) {
+  let validator
+  switch (method) {
+    case 'getById':
+      validator = param('id')
+        .exists()
+        .withMessage('Must specify an ID')
+        .isString()
+        .withMessage('ID should be a string')
+      break
+    default:
+      return requestValidator
+  }
+  return [validator, requestValidator]
+}
 
-async function getAllVariablesApi(request, response, next) {
+async function getAll(request, response, next) {
   try {
-    const data = await Variable.findAll({
-      raw: true,
-    })
-    response.json(payload.success(data))
+    response.json(jsend.success(await variableServices.findAll()))
   } catch (error) {
     next(error)
   }
 }
 
-async function getVariableByIdApi(request, response, next) {
-  const { id } = request.params
+async function getById(request, response, next) {
   try {
-    const data = await Variable.findByPk(id, {
-      raw: true,
-    })
-    if (data === null) {
-      throw new ApiError(`Invalid variable id: ${id}`, { status: 400 })
-    }
-    response.json(payload.success(data))
+    const { id } = request.params
+    response.json(jsend.success(await variableServices.findById(id)))
   } catch (error) {
     next(error)
   }
 }
 
-export { getAllVariablesApi, getVariableByIdApi }
+export default { getAll, getById, validate }

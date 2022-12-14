@@ -1,98 +1,60 @@
-import sequelize from '../../sequelize/index.js'
-import { ApiError } from '../utilities/error.js'
-import { payload } from '../utilities/payload.js'
+import { query, param } from 'express-validator'
+import { requestValidator } from '../middlewares/request-validator.js'
+import locationServices from '../services/locations.services.js'
+import jsend from '../utilities/jsend.js'
 
-const { Location } = sequelize.models
+function validate(method) {
+  let validator
+  switch (method) {
+    case 'getAll':
+      validator = query('type')
+        .if(query('type').exists())
+        .isIn(['region', 'country'])
+        .withMessage("Location type must be one of: 'region, country'.")
+      break
+    case 'getById':
+      validator = param('id')
+        .exists()
+        .withMessage('Must specify an ID')
+        .isString()
+        .withMessage('ID should be a string')
+      break
+    default:
+      return requestValidator
+  }
+  return [validator, requestValidator]
+}
 
-async function getAllLocationsApi(request, response, next) {
+async function getAll(request, response, next) {
   try {
-    const data = await Location.findAll({
-      raw: true,
-    })
-    if (!data.length) {
-      response.json(payload.fail('No data found!'))
+    const { type } = request.query
+    if (type) {
+      return response.json(
+        jsend.success(await locationServices.findByType(type))
+      )
     }
-    response.json(payload.success({ list: data }))
+    response.json(jsend.success(await locationServices.findAll()))
   } catch (error) {
     next(error)
   }
 }
 
-async function getAllCountriesApi(request, response, next) {
+async function getById(request, response, next) {
   try {
-    const data = await Location.findAll({
-      where: {
-        type: 'country',
-      },
-      raw: true,
-    })
-    if (!data.length) {
-      response.json(payload.fail('No data found!'))
-    }
-    response.json(payload.success({ list: data }))
+    const { id } = request.params
+    response.json(jsend.success(await locationServices.findById(id)))
   } catch (error) {
     next(error)
   }
 }
 
-async function getAllRegionsApi(request, response, next) {
+async function getChildrenById(request, response, next) {
   try {
-    const data = await Location.findAll({
-      where: {
-        type: 'region',
-      },
-      raw: true,
-    })
-    if (!data.length) {
-      response.json(payload.fail('No data found!'))
-    }
-    response.json(payload.success({ list: data }))
+    const { id } = request.params
+    response.json(jsend.success(await locationServices.findChildrenById(id)))
   } catch (error) {
     next(error)
   }
 }
 
-async function getLocationByIdApi(request, response, next) {
-  const { id } = request.params
-  try {
-    const data = await Location.findByPk(id, {
-      // attributes: { exclude: ['parentId'] },
-      // include: {
-      //   model: Location,
-      //   as: 'parent',
-      // },
-    })
-    if (data === null) {
-      throw new ApiError(`Invalid spatial id: '${id}'`, { status: 400 })
-    }
-    response.json(payload.success(data))
-  } catch (error) {
-    next(error)
-  }
-}
-
-async function getLocationChildrenApi(request, response, next) {
-  const { id } = request.params
-  try {
-    const parent = await Location.findByPk(id)
-    if (parent === null) {
-      throw new ApiError(`Invalid spatial id: '${id}'`, { status: 400 })
-    }
-    const children = await parent.getChildren()
-    const data = {
-      ...parent.get(),
-      list: children,
-    }
-    response.json(payload.success(data))
-  } catch (error) {
-    next(error)
-  }
-}
-
-export {
-  getAllLocationsApi,
-  getAllCountriesApi,
-  getAllRegionsApi,
-  getLocationByIdApi,
-  getLocationChildrenApi,
-}
+export default { getAll, getById, getChildrenById, validate }
