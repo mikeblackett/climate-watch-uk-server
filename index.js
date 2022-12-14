@@ -1,16 +1,16 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
 import * as url from 'node:url'
-import { knex } from './database/index.js'
+import db from './database/index.js'
 import app from './express/app.js'
-import { BadGatewayError } from './express/error/server.error.js'
+import { BadGatewayError } from './express/utilities/error/server.error.js'
 
 const PORT = process.env.PORT || 8080
 
 async function checkDatabaseConnection() {
   console.log(`Checking database connection...`)
   try {
-    await knex.raw('SELECT 1 + 1 AS result')
+    await db.raw('SELECT 1 + 1 AS result')
     console.log('Database connection OK!')
   } catch (error) {
     throw new BadGatewayError(

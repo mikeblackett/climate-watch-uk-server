@@ -19,6 +19,7 @@ pg.types.setTypeParser(pg.types.builtins.INT8, (value) => {
 
 const knex = Knex(knexConfig[env])
 Model.knex(knex)
+knex.models = { Location, Variable, Climate }
 
 if (env === 'development') {
   ;(function () {
@@ -42,4 +43,4 @@ if (env === 'development') {
   })()
 }
 
-export { knex, Location, Variable, Climate }
+export default knex
