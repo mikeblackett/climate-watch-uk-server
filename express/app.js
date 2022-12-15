@@ -3,8 +3,9 @@
 import express from 'express'
 import cors from 'cors'
 import { addRoutes } from './routes/routes.js'
+import { validationErrorMiddleware } from './middlewares/validation-error.middleware.js'
+import { errorMiddleware } from './middlewares/error.middleware.js'
 import jsend from './utilities/jsend.js'
-import { ClientError } from './utilities/error/client.error.js'
 
 const app = express()
 const corsOptions = {
@@ -35,14 +36,8 @@ app.get('/api', (request, response) => {
 addRoutes(app)
 
 // Catch any errors...
-app.use((error, request, response, next) => {
-  console.log('error handled')
-  response.status(error.statusCode || 500)
-  if (error instanceof ClientError) {
-    return response.json(jsend.fail(error.cause))
-  }
-  response.json(jsend.error(error.message, response.statusCode))
-})
+app.use(validationErrorMiddleware)
+app.use(errorMiddleware)
 
 // Finally, unhandled requests fail with a 404 not found response
 app.use((request, response) => {

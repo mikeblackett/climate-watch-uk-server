@@ -1,29 +1,5 @@
-import { query, param } from 'express-validator'
-import { requestValidator } from '../middlewares/request-validator.js'
 import locationServices from '../services/locations.services.js'
 import jsend from '../utilities/jsend.js'
-
-function validate(method) {
-  let validator
-  switch (method) {
-    case 'getAll':
-      validator = query('type')
-        .if(query('type').exists())
-        .isIn(['region', 'country'])
-        .withMessage("Location type must be one of: 'region, country'.")
-      break
-    case 'getById':
-      validator = param('id')
-        .exists()
-        .withMessage('Must specify an ID')
-        .isString()
-        .withMessage('ID should be a string')
-      break
-    default:
-      return requestValidator
-  }
-  return [validator, requestValidator]
-}
 
 async function getAll(request, response, next) {
   try {
@@ -57,4 +33,4 @@ async function getChildrenById(request, response, next) {
   }
 }
 
-export default { getAll, getById, getChildrenById, validate }
+export default { getAll, getById, getChildrenById }

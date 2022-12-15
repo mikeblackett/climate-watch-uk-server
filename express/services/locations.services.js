@@ -3,7 +3,7 @@ import db from '../../database/index.js'
 const { Location } = db.models
 
 async function findAll() {
-  return await Location.query()
+  return await Location.query().modify('selectDefault')
 }
 
 async function findByType(type) {

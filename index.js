@@ -3,7 +3,6 @@ dotenv.config()
 import * as url from 'node:url'
 import db from './database/index.js'
 import app from './express/app.js'
-import { BadGatewayError } from './express/utilities/error/server.error.js'
 
 const PORT = process.env.PORT || 8080
 
@@ -13,9 +12,7 @@ async function checkDatabaseConnection() {
     await db.raw('SELECT 1 + 1 AS result')
     console.log('Database connection OK!')
   } catch (error) {
-    throw new BadGatewayError(
-      `Unable to connect to the database: ${error.message}`
-    )
+    throw Error(`Unable to connect to the database: ${error.message}`)
   }
 }
 

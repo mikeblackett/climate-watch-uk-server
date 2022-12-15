@@ -1,12 +1,9 @@
 import express from 'express'
-import snapshotController from '../controllers/climate.controller.js'
+import climateControllers from '../controllers/climate.controllers.js'
+import climateValidators from '../validators/climate.validators.js'
 
 var router = express.Router()
 
-router.get(
-  '/',
-  snapshotController.validate('getSnapshot'),
-  snapshotController.getSnapshot
-)
+router.get('/', climateValidators.getSnapshot, climateControllers.getSnapshot)
 
 export default router
