@@ -1,4 +1,4 @@
-import climateServices from '../services/climate.services.js'
+import * as climateServices from '../services/climate.services.js'
 import jsend from '../utilities/jsend.js'
 
 async function getSnapshot(request, response, next) {

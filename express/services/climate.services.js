@@ -33,4 +33,4 @@ async function monthAverage(location, variable, year, month) {
   return await query
 }
 
-export default { yearAverage, monthAverage }
+export { yearAverage, monthAverage }

@@ -10,4 +10,8 @@ async function findById(id) {
   return await Variable.query().where('id', id)
 }
 
-export default { findAll, findById }
+async function getAllIds() {
+  return await Variable.query().select('id')
+}
+
+export { findAll, findById, getAllIds }
