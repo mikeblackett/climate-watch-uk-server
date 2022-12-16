@@ -1,6 +1,6 @@
 import express from 'express'
-import locationControllers from '../controllers/location.controllers.js'
-import locationValidators from '../validators/location.validators.js'
+import * as locationControllers from '../controllers/location.controllers.js'
+import * as locationValidators from '../validators/location.validators.js'
 
 var router = express.Router()
 

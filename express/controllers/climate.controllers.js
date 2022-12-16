@@ -16,4 +16,4 @@ async function getSnapshot(request, response, next) {
   }
 }
 
-export default { getSnapshot }
+export { getSnapshot }

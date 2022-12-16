@@ -18,4 +18,4 @@ async function getById(request, response, next) {
   }
 }
 
-export default { getAll, getById }
+export { getAll, getById }

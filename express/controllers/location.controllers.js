@@ -33,4 +33,4 @@ async function getChildrenById(request, response, next) {
   }
 }
 
-export default { getAll, getById, getChildrenById }
+export { getAll, getById, getChildrenById }
