@@ -5,7 +5,7 @@ async function climateSchema(knex) {
     table.smallint('year')
     table.smallint('season_year')
     table.string('season')
-    table.smallint('month')
+    table.tinyint('month')
     table.string('location_id').notNullable()
     table
       .foreign('location_id')
