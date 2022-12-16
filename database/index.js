@@ -1,11 +1,9 @@
 import Knex from 'knex'
 import { Model } from 'objection'
 import pg from 'pg'
-import knexConfig from './knexfile.js'
-import { Location } from './models/location.model.js'
-import { Variable } from './models/variable.model.js'
-import { Climate } from './models/climate.model.js'
 import { PerformanceObserver, performance } from 'perf_hooks'
+import knexConfig from './knexfile.js'
+import * as models from './models/index.js'
 
 const env = process.env.NODE_ENV || 'development'
 
@@ -19,7 +17,7 @@ pg.types.setTypeParser(pg.types.builtins.INT8, (value) => {
 
 const knex = Knex(knexConfig[env])
 Model.knex(knex)
-knex.models = { Location, Variable, Climate }
+knex.models = models
 
 if (env === 'development') {
   ;(function () {
