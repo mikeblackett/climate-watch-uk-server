@@ -1,11 +1,18 @@
 import validate from '../middlewares/json-validator.middleware.js'
+import { getAllIds } from '../services/locations.services.js'
+
+const ids = await getAllIds()
+const idEnum = ids.reduce((p, c) => {
+  p.push(c.id)
+  return p
+}, [])
 
 const idSchema = {
   type: 'object',
   properties: {
     id: {
       type: 'string',
-      pattern: '^gb(-[a-z]{3})?$',
+      enum: idEnum,
     },
   },
   required: ['id'],
@@ -31,4 +38,4 @@ const getChildrenById = validate({
   params: idSchema,
 })
 
-export default { getAll, getById, getChildrenById }
+export { getAll, getById, getChildrenById, idEnum as locationIds }

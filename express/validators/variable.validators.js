@@ -1,4 +1,11 @@
 import validate from '../middlewares/json-validator.middleware.js'
+import { getAllIds } from '../services/variable.services.js'
+
+const ids = await getAllIds()
+const idEnum = ids.reduce((p, c) => {
+  p.push(c.id)
+  return p
+}, [])
 
 const getById = validate({
   params: {
@@ -6,11 +13,11 @@ const getById = validate({
     properties: {
       id: {
         type: 'string',
-        minLength: 3,
+        enum: idEnum,
       },
     },
     required: ['id'],
   },
 })
 
-export default { getById }
+export { getById, idEnum as variableIds }

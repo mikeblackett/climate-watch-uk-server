@@ -1,11 +1,6 @@
 import validate from '../middlewares/json-validator.middleware.js'
-import { getAllIds } from '../services/variable.services.js'
-
-const variables = await getAllIds()
-const variableEnum = variables.reduce((p, c) => {
-  p.push(c.id)
-  return p
-}, [])
+import { variableIds } from './variable.validators.js'
+import { locationIds } from './location.validators.js'
 
 const getSnapshot = validate({
   query: {
@@ -13,6 +8,7 @@ const getSnapshot = validate({
     properties: {
       location: {
         type: 'string',
+        enum: locationIds,
       },
       year: {
         type: 'string',
@@ -20,7 +16,7 @@ const getSnapshot = validate({
       },
       variable: {
         type: 'string',
-        enum: variableEnum,
+        enum: variableIds,
       },
       month: {
         type: 'string',
@@ -31,4 +27,4 @@ const getSnapshot = validate({
   },
 })
 
-export default { getSnapshot }
+export { getSnapshot }

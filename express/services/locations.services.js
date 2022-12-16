@@ -18,4 +18,8 @@ async function findChildrenById(id) {
   return await Location.relatedQuery('children').modify('selectDefault').for(id)
 }
 
-export { findAll, findById, findByType, findChildrenById }
+async function getAllIds() {
+  return await Location.query().select('id')
+}
+
+export { findAll, findById, findByType, findChildrenById, getAllIds }
