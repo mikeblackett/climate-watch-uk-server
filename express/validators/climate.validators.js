@@ -16,7 +16,7 @@ const variable = {
 }
 const month = {
   type: 'string',
-  pattern: '^([1-9]|1[0-2]{1})$',
+  pattern: '^([1-9]|1[0-2])$',
 }
 const getSnapshot = validate({
   query: {
