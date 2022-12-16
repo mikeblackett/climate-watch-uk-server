@@ -33,4 +33,19 @@ async function monthAverage(location, variable, year, month) {
   return await query
 }
 
-export { yearAverage, monthAverage }
+async function maxMonth(location, variable, month, from, to) {
+  const subquery = Climate.query()
+    .max('value as value')
+    .modify('filterByLocation', location)
+    .modify('filterByVariable', variable)
+    .modify('filterByMonth', month)
+    .groupBy(['location_id', 'variable_id', 'month'])
+  return await Climate.query()
+    .select(['location_id', 'variable_id', 'year', 'month', 'value'])
+    .where('value', '=', subquery)
+    .modify('filterByLocation', location)
+    .modify('filterByVariable', variable)
+    .modify('filterByMonth', month)
+}
+
+export { yearAverage, monthAverage, maxMonth }

@@ -16,4 +16,18 @@ async function getSnapshot(request, response, next) {
   }
 }
 
-export { getSnapshot }
+async function getMaxMonth(request, response, next) {
+  try {
+    const { location, variable, month, from, to } = request.query
+    const data = await climateServices.maxMonth(
+      location,
+      variable,
+      month,
+      from,
+      to
+    )
+    response.json(jsend.success(data))
+  } catch (error) {}
+}
+
+export { getSnapshot, getMaxMonth }
