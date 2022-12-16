@@ -30,11 +30,10 @@ class Climate extends BaseModel {
   }
 
   static get modifiers() {
-    const Model = this
     return {
-      getYears(query, rank = false) {
+      getYears(query) {
         const { ref } = Climate
-        query
+        return query
           .select([
             ref('variable_id'),
             ref('location_id'),
@@ -42,56 +41,52 @@ class Climate extends BaseModel {
             raw(`round(avg(?), 2) as value`, [ref('value')]),
           ])
           .groupBy([ref('year'), ref('variable_id'), ref('location_id')])
-        if (rank) {
-          query.select(
-            raw(
-              'dense_rank() over (partition by ?, ? order by avg(?) desc) as rank',
-              [ref('variable_id'), ref('location_id'), ref('value')]
-            )
-          )
-        }
-        return query
       },
-      getMonths(query, rank = false) {
+      getYearRanks(query) {
         const { ref } = Climate
-        query.select(
+        return query.select(
+          raw(
+            'dense_rank() over (partition by ?, ? order by avg(?) desc) as rank',
+            [ref('variable_id'), ref('location_id'), ref('value')]
+          )
+        )
+      },
+      getMonths(query) {
+        const { ref } = Climate
+        return query.select(
           ref('variable_id'),
           ref('location_id'),
           ref('year'),
           ref('month'),
           ref('value')
         )
-        if (rank) {
-          query.select(
-            raw(
-              `dense_rank() over (partition by ?, ?, ? order by ? desc) as rank`,
-              [
-                ref('month'),
-                ref('variable_id'),
-                ref('location_id'),
-                ref('value'),
-              ]
-            )
+      },
+      getMonthRanks(query) {
+        const { ref } = Climate
+        return query.select(
+          raw(
+            `dense_rank() over (partition by ?, ?, ? order by ? desc) as rank`,
+            [ref('month'), ref('variable_id'), ref('location_id'), ref('value')]
           )
-        }
+        )
       },
       filterByLocation(query, conditions) {
-        const { ref } = Model
+        const { ref } = Climate
         const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
         return query[clause](ref('location_id'), conditions)
       },
       filterByYear(query, conditions) {
-        const { ref } = Model
+        const { ref } = Climate
         const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
         return query[clause](ref('year'), conditions)
       },
       filterByMonth(query, conditions) {
-        const { ref } = Model
+        const { ref } = Climate
         const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
         return query[clause](ref('month'), conditions)
       },
       filterByVariable(query, conditions) {
-        const { ref } = Model
+        const { ref } = Climate
         const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
         return query[clause](ref('variable_id'), conditions)
       },

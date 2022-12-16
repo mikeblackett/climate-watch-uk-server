@@ -5,7 +5,7 @@ const { Climate } = db.models
 async function yearAverage(location, variable, year) {
   let query = Climate.query()
     .alias('c')
-    .from(Climate.query().modify('getYears', true).as('c'))
+    .from(Climate.query().modify('getYears').modify('getYearRanks').as('c'))
     .modify('filterByYear', year)
     .orderBy('c.rank')
   if (variable) {
@@ -20,7 +20,7 @@ async function yearAverage(location, variable, year) {
 async function monthAverage(location, variable, year, month) {
   let query = Climate.query()
     .alias('c')
-    .from(Climate.query().modify('getMonths', true).as('c'))
+    .from(Climate.query().modify('getMonths').modify('getMonthRanks').as('c'))
     .modify('filterByYear', year)
     .modify('filterByMonth', month)
     .orderBy('c.rank')
