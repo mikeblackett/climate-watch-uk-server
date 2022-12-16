@@ -1,5 +1,5 @@
 /**
- * @module jsend A JSend-compliant server responses
+ * @module jsend JSend-compliant server responses
  * @see {@link https://github.com/omniti-labs/jsend}
  */
 
