@@ -31,18 +31,13 @@ class Climate extends BaseModel {
 
   static get modifiers() {
     return {
-      getYears(query) {
+      averageByYear(query) {
         const { ref } = Climate
         return query
-          .select([
-            ref('variable_id'),
-            ref('location_id'),
-            ref('year'),
-            raw(`round(avg(?), 2) as value`, [ref('value')]),
-          ])
+          .select([raw(`round(avg(?), 2) as value`, [ref('value')])])
           .groupBy([ref('year'), ref('variable_id'), ref('location_id')])
       },
-      getYearRanks(query) {
+      rankByYearAverage(query) {
         const { ref } = Climate
         return query.select(
           raw(
@@ -51,22 +46,37 @@ class Climate extends BaseModel {
           )
         )
       },
-      getMonths(query) {
-        const { ref } = Climate
-        return query.select(
-          ref('variable_id'),
-          ref('location_id'),
-          ref('year'),
-          ref('month'),
-          ref('value')
-        )
-      },
-      getMonthRanks(query) {
+      rankByMonth(query) {
         const { ref } = Climate
         return query.select(
           raw(
             `dense_rank() over (partition by ?, ?, ? order by ? desc) as rank`,
             [ref('month'), ref('variable_id'), ref('location_id'), ref('value')]
+          )
+        )
+      },
+      averageBySeason(query) {
+        const { ref } = Climate
+        return query
+          .select([raw(`round(avg(?), 2) as value`, [ref('value')])])
+          .groupBy([
+            ref('season'),
+            ref('season_year'),
+            ref('variable_id'),
+            ref('location_id'),
+          ])
+      },
+      rankBySeasonAverage(query) {
+        const { ref } = Climate
+        return query.select(
+          raw(
+            'dense_rank() over (partition by ?, ?, ? order by avg(?) desc) as rank',
+            [
+              ref('season'),
+              ref('variable_id'),
+              ref('location_id'),
+              ref('value'),
+            ]
           )
         )
       },
@@ -79,6 +89,50 @@ class Climate extends BaseModel {
         const { ref } = Climate
         const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
         return query[clause](ref('year'), conditions)
+      },
+      filterByYearRange(query, conditions) {
+        const { ref } = Climate
+        if (!Array.isArray(conditions)) {
+          throw Error('`conditions` parameter should be an array with length 2')
+        }
+        if (conditions[0] && conditions[1]) {
+          return query.whereBetween(ref('year'), conditions)
+        }
+        if (conditions[0] && !conditions[1]) {
+          return query.where(ref('year'), '>=', conditions[0])
+        }
+        if (!conditions[0] && conditions[1]) {
+          return query.where(ref('year'), '<=', conditions[1])
+        }
+        // Noop
+        return query
+      },
+      filterBySeasonYearRange(query, conditions) {
+        const { ref } = Climate
+        if (!Array.isArray(conditions)) {
+          throw Error('`conditions` parameter should be an array with length 2')
+        }
+        if (conditions[0] && conditions[1]) {
+          return query.whereBetween(ref('season_year'), conditions)
+        }
+        if (conditions[0] && !conditions[1]) {
+          return query.where(ref('season_year'), '>=', conditions[0])
+        }
+        if (!conditions[0] && conditions[1]) {
+          return query.where(ref('season_year'), '<=', conditions[1])
+        }
+        // Noop
+        return query
+      },
+      filterBySeason(query, conditions) {
+        const { ref } = Climate
+        const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
+        return query[clause](ref('season'), conditions)
+      },
+      filterBySeasonYear(query, conditions) {
+        const { ref } = Climate
+        const clause = Array.isArray(conditions) ? 'whereIn' : 'where'
+        return query[clause](ref('season_year'), conditions)
       },
       filterByMonth(query, conditions) {
         const { ref } = Climate
