@@ -1,4 +1,4 @@
-import * as locationServices from '../services/locations.services.js'
+import * as locationServices from '../services/meta/location.services.js'
 import jsend from '../utilities/jsend.js'
 
 async function getAll(request, response, next) {

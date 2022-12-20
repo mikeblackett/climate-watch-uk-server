@@ -1,4 +1,4 @@
-import db from '../../database/index.js'
+import db from '../../../database/index.js'
 
 const { Variable } = db.models
 

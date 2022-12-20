@@ -1,11 +1,9 @@
-import locationRouter from './location.routes.js'
-import variableRouter from './variable.routes.js'
-import climateRouter from './climate.routes.js'
+import metaRouter from './meta.routes.js'
+import dataRouter from './data.routes.js'
 
 function addRoutes(app) {
-  app.use('/api/locations', locationRouter)
-  app.use('/api/variables', variableRouter)
-  app.use('/api/climate', climateRouter)
+  app.use('/api/meta', metaRouter)
+  app.use('/api/data', dataRouter)
 }
 
 export { addRoutes }
