@@ -19,7 +19,16 @@ import {
   validateSliceSeason,
   validateSliceYear,
 } from '../validators/slice.validators.js'
-import * as aggregateControllers from '../controllers/aggregate.controllers.js'
+import {
+  getAggregateMonth,
+  getAggregateSeason,
+  getAggregateYear,
+} from '../controllers/aggregate.controllers.js'
+import {
+  validateAggregateMonth,
+  validateAggregateSeason,
+  validateAggregateYear,
+} from '../validators/aggregate.validators.js'
 import * as rankControllers from '../controllers/rank.controllers.js'
 import * as extremeControllers from '../controllers/extreme.controllers.js'
 import * as anomalyControllers from '../controllers/anomaly.controllers.js'
@@ -34,13 +43,9 @@ router.get('/slice/month', validateSliceMonth, getSliceMonth)
 router.get('/slice/season', validateSliceSeason, getSliceSeason)
 router.get('/slice/year', validateSliceYear, getSliceYear)
 
-router.get('/aggregated/month', aggregateControllers.getMonth)
-router.get('/aggregated/season', aggregateControllers.getSeason)
-router.get('/aggregated/year', aggregateControllers.getYear)
-
-router.get('/rank/month', rankControllers.getMonth)
-router.get('/rank/season', rankControllers.getSeason)
-router.get('/rank/year', rankControllers.getYear)
+router.get('/aggregated/month', validateAggregateMonth, getAggregateMonth)
+router.get('/aggregated/season', validateAggregateSeason, getAggregateSeason)
+router.get('/aggregated/year', validateAggregateYear, getAggregateYear)
 
 router.get('/max/month', extremeControllers.getMonthMax)
 router.get('/max/season', extremeControllers.getSeasonMax)
@@ -49,6 +54,10 @@ router.get('/max/year', extremeControllers.getYearMax)
 router.get('/min/month', extremeControllers.getMonthMin)
 router.get('/min/season', extremeControllers.getSeasonMin)
 router.get('/min/year', extremeControllers.getYearMin)
+
+router.get('/rank/month', rankControllers.getMonth)
+router.get('/rank/season', rankControllers.getSeason)
+router.get('/rank/year', rankControllers.getYear)
 
 router.get('/anomaly/month', anomalyControllers.getMonthAnomaly)
 
