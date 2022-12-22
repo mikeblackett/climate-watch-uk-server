@@ -2,10 +2,10 @@ import * as rankServices from '../services/data/rank.services.js'
 
 import jsend from '../utilities/jsend.js'
 
-async function getMonth(request, response, next) {
+async function getRankMonth(request, response, next) {
   try {
     const { location, variable, month, year, start, end } = request.query
-    const list = await rankServices.monthRank({
+    const list = await rankServices.rankMonth({
       month,
       year,
       start,
@@ -19,10 +19,10 @@ async function getMonth(request, response, next) {
   }
 }
 
-async function getSeason(request, response, next) {
+async function getRankSeason(request, response, next) {
   try {
     const { location, variable, season, year, start, end } = request.query
-    const list = await rankServices.seasonRank({
+    const list = await rankServices.rankSeason({
       season,
       year,
       start,
@@ -36,10 +36,10 @@ async function getSeason(request, response, next) {
   }
 }
 
-async function getYear(request, response, next) {
+async function getRankYear(request, response, next) {
   try {
     const { year, location, variable, start, end } = request.query
-    const list = await rankServices.yearRank({
+    const list = await rankServices.rankYear({
       year,
       start,
       end,
@@ -52,4 +52,4 @@ async function getYear(request, response, next) {
   }
 }
 
-export { getMonth, getSeason, getYear }
+export { getRankMonth, getRankSeason, getRankYear }

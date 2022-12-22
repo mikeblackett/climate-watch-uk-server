@@ -43,8 +43,17 @@ import {
   validateExtremeYear,
 } from '../validators/extreme.validators.js'
 
-import * as rankControllers from '../controllers/rank.controllers.js'
-import * as extremeControllers from '../controllers/extreme.controllers.js'
+import {
+  getRankMonth,
+  getRankSeason,
+  getRankYear,
+} from '../controllers/rank.controllers.js'
+import {
+  validateRankMonth,
+  validateRankSeason,
+  validateRankYear,
+} from '../validators/rank.validators.js'
+
 import * as anomalyControllers from '../controllers/anomaly.controllers.js'
 
 var router = express.Router()
@@ -69,9 +78,9 @@ router.get('/min/month', validateExtremeMonth, getMinMonth)
 router.get('/min/season', validateExtremeSeason, getMinSeason)
 router.get('/min/year', validateExtremeYear, getMinYear)
 
-router.get('/rank/month', rankControllers.getMonth)
-router.get('/rank/season', rankControllers.getSeason)
-router.get('/rank/year', rankControllers.getYear)
+router.get('/rank/month', validateRankMonth, getRankMonth)
+router.get('/rank/season', validateRankSeason, getRankSeason)
+router.get('/rank/year', validateRankYear, getRankYear)
 
 router.get('/anomaly/month', anomalyControllers.getMonthAnomaly)
 
