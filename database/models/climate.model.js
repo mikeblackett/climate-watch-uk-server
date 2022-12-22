@@ -31,26 +31,34 @@ class Climate extends BaseModel {
 
   static get modifiers() {
     return {
-      averageByYear(query) {
+      average(query) {
         const { ref } = Climate
         return query
           .select([raw(`round(avg(?), 2) as value`, [ref('value')])])
-          .groupBy([ref('year'), ref('variable_id'), ref('location_id')])
+          .groupBy([ref('variable_id'), ref('location_id')])
       },
-      rankByYearAverage(query) {
+      averageByYear(query) {
+        const { ref } = Climate
+        return query.modify('average').groupBy([ref('year')])
+      },
+      rankByYearAverage(query, order = 'desc') {
         const { ref } = Climate
         return query.select(
           raw(
-            'dense_rank() over (partition by ?, ? order by avg(?) desc) as rank',
+            `dense_rank() over (partition by ?, ? order by avg(?) ${order}) as rank`,
             [ref('variable_id'), ref('location_id'), ref('value')]
           )
         )
       },
-      rankByMonth(query) {
+      averageByMonth(query) {
+        const { ref } = Climate
+        return query.modify('average').groupBy([ref('month')])
+      },
+      rankByMonth(query, order = 'desc') {
         const { ref } = Climate
         return query.select(
           raw(
-            `dense_rank() over (partition by ?, ?, ? order by ? desc) as rank`,
+            `dense_rank() over (partition by ?, ?, ? order by ? ${order}) as rank`,
             [ref('month'), ref('variable_id'), ref('location_id'), ref('value')]
           )
         )
@@ -58,19 +66,14 @@ class Climate extends BaseModel {
       averageBySeason(query) {
         const { ref } = Climate
         return query
-          .select([raw(`round(avg(?), 2) as value`, [ref('value')])])
-          .groupBy([
-            ref('season'),
-            ref('season_year'),
-            ref('variable_id'),
-            ref('location_id'),
-          ])
+          .modify('average')
+          .groupBy([ref('season'), ref('season_year')])
       },
-      rankBySeasonAverage(query) {
+      rankBySeasonAverage(query, order = 'desc') {
         const { ref } = Climate
         return query.select(
           raw(
-            'dense_rank() over (partition by ?, ?, ? order by avg(?) desc) as rank',
+            `dense_rank() over (partition by ?, ?, ? order by avg(?) ${order}) as rank`,
             [
               ref('season'),
               ref('variable_id'),
