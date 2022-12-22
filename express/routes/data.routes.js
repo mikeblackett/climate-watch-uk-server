@@ -29,6 +29,20 @@ import {
   validateAggregateSeason,
   validateAggregateYear,
 } from '../validators/aggregate.validators.js'
+import {
+  getMaxMonth,
+  getMaxSeason,
+  getMaxYear,
+  getMinMonth,
+  getMinSeason,
+  getMinYear,
+} from '../controllers/extreme.controllers.js'
+import {
+  validateExtremeMonth,
+  validateExtremeSeason,
+  validateExtremeYear,
+} from '../validators/extreme.validators.js'
+
 import * as rankControllers from '../controllers/rank.controllers.js'
 import * as extremeControllers from '../controllers/extreme.controllers.js'
 import * as anomalyControllers from '../controllers/anomaly.controllers.js'
@@ -47,13 +61,13 @@ router.get('/aggregated/month', validateAggregateMonth, getAggregateMonth)
 router.get('/aggregated/season', validateAggregateSeason, getAggregateSeason)
 router.get('/aggregated/year', validateAggregateYear, getAggregateYear)
 
-router.get('/max/month', extremeControllers.getMaxMonth)
-router.get('/max/season', extremeControllers.getMaxSeason)
-router.get('/max/year', extremeControllers.getMaxYear)
+router.get('/max/month', validateExtremeMonth, getMaxMonth)
+router.get('/max/season', validateExtremeSeason, getMaxSeason)
+router.get('/max/year', validateExtremeYear, getMaxYear)
 
-router.get('/min/month', extremeControllers.getMinMonth)
-router.get('/min/season', extremeControllers.getMinSeason)
-router.get('/min/year', extremeControllers.getMinYear)
+router.get('/min/month', validateExtremeMonth, getMinMonth)
+router.get('/min/season', validateExtremeSeason, getMinSeason)
+router.get('/min/year', validateExtremeYear, getMinYear)
 
 router.get('/rank/month', rankControllers.getMonth)
 router.get('/rank/season', rankControllers.getSeason)
