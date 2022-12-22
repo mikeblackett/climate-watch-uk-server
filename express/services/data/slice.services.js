@@ -6,7 +6,13 @@ const { Climate } = db.models
 function sliceMonth({ month, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select([ref('location_id'), ref('year'), ref('month'), ref('value')])
+    .select([
+      ref('location_id'),
+      ref('variable_id'),
+      ref('year'),
+      ref('month'),
+      ref('value'),
+    ])
     .modify('rankByMonth', order)
     .modify('filterByLocation', location)
     .modify('filterByYearRange', [start, end])
@@ -23,7 +29,12 @@ function sliceMonth({ month, location, variable, start, end, order }) {
 function sliceSeason({ season, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select([ref('location_id'), ref('season_year').as('year'), ref('season')])
+    .select([
+      ref('location_id'),
+      ref('variable_id'),
+      ref('season_year').as('year'),
+      ref('season'),
+    ])
     .modify('averageBySeason')
     .modify('rankBySeasonAverage', order)
     .modify('filterByLocation', location)
@@ -42,7 +53,7 @@ function sliceSeason({ season, location, variable, start, end, order }) {
 function sliceYear({ location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select([ref('location_id'), ref('year')])
+    .select([ref('location_id'), ref('variable_id'), ref('year')])
     .modify('averageByYear')
     .modify('rankByYearAverage', order)
     .modify('filterByLocation', location)
