@@ -5,7 +5,7 @@ import {
   season,
   variable,
   year,
-} from './property.validators.js'
+} from './definitions.validators.js'
 
 const query = {
   type: 'object',
