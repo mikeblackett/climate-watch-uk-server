@@ -1,7 +1,7 @@
 import * as locationServices from '../services/meta/location.services.js'
 import jsend from '../utilities/jsend.js'
 
-async function getAll(request, response, next) {
+async function getAllLocations(request, response, next) {
   try {
     const { type } = request.query
     if (type) {
@@ -15,7 +15,7 @@ async function getAll(request, response, next) {
   }
 }
 
-async function getById(request, response, next) {
+async function getLocationById(request, response, next) {
   try {
     const { id } = request.params
     response.json(jsend.success(await locationServices.findById(id)))
@@ -24,7 +24,7 @@ async function getById(request, response, next) {
   }
 }
 
-async function getChildrenById(request, response, next) {
+async function getLocationChildrenById(request, response, next) {
   try {
     const { id } = request.params
     response.json(jsend.success(await locationServices.findChildrenById(id)))
@@ -33,4 +33,4 @@ async function getChildrenById(request, response, next) {
   }
 }
 
-export { getAll, getById, getChildrenById }
+export { getAllLocations, getLocationById, getLocationChildrenById }

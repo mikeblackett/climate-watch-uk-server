@@ -1,17 +1,17 @@
 import validate from '../middlewares/json-validator.middleware.js'
-import { location } from './definitions.validators.js'
+import { variable } from './definitions.validators.js'
 
-const getById = validate({
+const validateVariableById = validate({
   params: {
     type: 'object',
     properties: {
       id: {
         type: 'string',
-        enum: location.enum,
+        enum: variable.enum,
       },
     },
     required: ['id'],
   },
 })
 
-export { getById }
+export { validateVariableById }

@@ -1,15 +1,23 @@
 import express from 'express'
-import * as locationControllers from '../controllers/location.controllers.js'
-import * as locationValidators from '../validators/location.validators.js'
+import {
+  getAllLocations,
+  getLocationById,
+  getLocationChildrenById,
+} from '../controllers/location.controllers.js'
+import {
+  validateAllLocations,
+  validateLocationById,
+  validateLocationChildrenById,
+} from '../validators/location.validators.js'
 
 var router = express.Router()
 
-router.get('/', locationValidators.getAll, locationControllers.getAll)
-router.get('/:id', locationValidators.getById, locationControllers.getById)
+router.get('/', validateAllLocations, getAllLocations)
+router.get('/:id', validateLocationById, getLocationById)
 router.get(
   '/:id/children',
-  locationValidators.getChildrenById,
-  locationControllers.getChildrenById
+  validateLocationChildrenById,
+  getLocationChildrenById
 )
 
 export default router
