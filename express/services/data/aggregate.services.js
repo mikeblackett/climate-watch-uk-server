@@ -3,54 +3,61 @@ import db from '../../../database/index.js'
 
 const { Climate } = db.models
 
-function _aggregate(query, { variable, location, start, end }) {
-  query
-    .select(raw(`round(avg(value), 2) as value`))
-    .groupBy(['variable_id', 'location_id'])
-    .whereBetween('year', [start, end])
+function aggregateMonth({ month, location, variable, start, end }) {
+  const { ref } = Climate
+  let query = Climate.query()
+    .select(ref('month'), ref('variable_id'))
+    .max('year as end')
+    .min('year as start')
+    .groupBy(ref('month'))
+    .modify('average')
+    .modify('filterByYearRange', [start, end])
+    .modify('filterByLocation', location)
+  if (month) {
+    query.modify('filterByMonth', month)
+  }
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  }
+  return query
+}
+
+function aggregateSeason({ season, location, variable, start, end }) {
+  const { ref } = Climate
+  let query = Climate.query()
+    .select(ref('season'), ref('variable_id'))
+    .max('year as end')
+    .min('year as start')
+    .groupBy(ref('season'))
+    .modify('average')
+    .modify('filterBySeasonYearRange', [start, end])
+    .modify('filterByLocation', location)
+  if (season) {
+    query.modify('filterBySeason', season)
+  } else {
+    query.select(ref('season')).groupBy(ref('season')).orderBy(ref('season'))
+  }
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  }
+  return query
+}
+
+function aggregateYear({ location, variable, start, end } = {}) {
+  const { ref } = Climate
+  let query = Climate.query()
+    .select(ref('variable_id'))
+    .max('year as end')
+    .min('year as start')
+    .modify('average')
+    .modify('filterByYearRange', [start, end])
     .modify('filterByLocation', location)
   if (variable) {
     query.modify('filterByVariable', variable)
   } else {
-    query.select('variable_id')
+    query.select(ref('variable_id'))
   }
   return query
 }
 
-function monthAggregate({ month, location, variable, start, end }) {
-  let query = Climate.query()
-    .modify(_aggregate, { location, variable, start, end })
-    .select('month')
-    .groupBy('month')
-  if (month) {
-    query.modify('filterByMonth', month)
-  } else {
-    query.orderBy('month')
-  }
-  return query
-}
-
-function seasonAggregate({ season, location, variable, start, end }) {
-  let query = Climate.query()
-    .modify(_aggregate, { location, variable, start, end })
-    .select('season')
-    .groupBy('season')
-  if (season) {
-    query.modify('filterBySeason', season)
-  } else {
-    query.orderBy('season')
-  }
-  return query
-}
-
-function yearAggregate({ location, variable, start, end } = {}) {
-  let query = Climate.query().modify(_aggregate, {
-    location,
-    variable,
-    start,
-    end,
-  })
-  return query
-}
-
-export { monthAggregate, seasonAggregate, yearAggregate }
+export { aggregateMonth, aggregateSeason, aggregateYear }
