@@ -17,8 +17,6 @@ function monthSnapshot({ month, year, location, variable }) {
     .modify('filterByMonth', month)
   if (variable) {
     query.modify('filterByVariable', variable)
-  } else {
-    query.select(ref('variable_id'))
   }
   return query
 }
@@ -38,8 +36,6 @@ function seasonSnapshot({ season, year, location, variable }) {
     .modify('filterBySeason', season)
   if (variable) {
     query.modify('filterByVariable', variable)
-  } else {
-    query.select(ref('variable_id'))
   }
   return query
 }
@@ -53,8 +49,6 @@ function yearSnapshot({ year, location, variable }) {
     .modify('filterByLocation', location)
   if (variable) {
     query.modify('filterByVariable', variable)
-  } else {
-    query.select(ref('variable_id'))
   }
   return query
 }
