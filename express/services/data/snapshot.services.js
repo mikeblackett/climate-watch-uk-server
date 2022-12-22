@@ -1,35 +1,61 @@
 import db from '../../../database/index.js'
-import { filterOrSelectVariable } from './slice.services.js'
 
 const { Climate } = db.models
 
 function monthSnapshot({ month, year, location, variable }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select(ref('value'))
+    .select(
+      ref('location_id'),
+      ref('variable_id'),
+      ref('year'),
+      ref('month'),
+      ref('value')
+    )
     .modify('filterByYear', year)
     .modify('filterByLocation', location)
     .modify('filterByMonth', month)
-    .modify(filterOrSelectVariable, variable)
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  } else {
+    query.select(ref('variable_id'))
+  }
   return query
 }
 
 function seasonSnapshot({ season, year, location, variable }) {
+  const { ref } = Climate
   const query = Climate.query()
+    .select(
+      ref('location_id'),
+      ref('variable_id'),
+      ref('season_year as year'),
+      ref('season')
+    )
     .modify('averageBySeason')
     .modify('filterBySeasonYear', year)
     .modify('filterByLocation', location)
     .modify('filterBySeason', season)
-    .modify(filterOrSelectVariable, variable)
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  } else {
+    query.select(ref('variable_id'))
+  }
   return query
 }
 
 function yearSnapshot({ year, location, variable }) {
+  const { ref } = Climate
   const query = Climate.query()
+    .select(ref('location_id'), ref('variable_id'), ref('year'))
     .modify('averageByYear')
     .modify('filterByYear', year)
     .modify('filterByLocation', location)
-    .modify(filterOrSelectVariable, variable)
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  } else {
+    query.select(ref('variable_id'))
+  }
   return query
 }
 
