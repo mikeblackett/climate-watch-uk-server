@@ -3,7 +3,7 @@ import db from '../../../database/index.js'
 
 const { Climate } = db.models
 
-function monthSlice({ month, location, variable, start, end, order }) {
+function sliceMonth({ month, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
     .select([ref('location_id'), ref('year'), ref('month'), ref('value')])
@@ -20,7 +20,7 @@ function monthSlice({ month, location, variable, start, end, order }) {
   return query
 }
 
-function seasonSlice({ season, location, variable, start, end, order }) {
+function sliceSeason({ season, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
     .select([ref('location_id'), ref('season_year').as('year'), ref('season')])
@@ -39,7 +39,7 @@ function seasonSlice({ season, location, variable, start, end, order }) {
   return query
 }
 
-function yearSlice({ location, variable, start, end, order }) {
+function sliceYear({ location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
     .select([ref('location_id'), ref('year')])
@@ -54,4 +54,4 @@ function yearSlice({ location, variable, start, end, order }) {
   return query
 }
 
-export { monthSlice, seasonSlice, yearSlice }
+export { sliceMonth, sliceSeason, sliceYear }

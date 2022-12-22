@@ -5,7 +5,7 @@ import jsend from '../utilities/jsend.js'
 async function getSliceMonth(request, response, next) {
   try {
     const { location, variable, month, start, end } = request.query
-    const result = await services.monthSlice({
+    const result = await services.sliceMonth({
       location,
       variable,
       month,
@@ -21,7 +21,7 @@ async function getSliceMonth(request, response, next) {
 async function getSliceSeason(request, response, next) {
   try {
     const { location, variable, season, start, end } = request.query
-    const result = await services.seasonSlice({
+    const result = await services.sliceSeason({
       location,
       variable,
       season,
@@ -37,7 +37,7 @@ async function getSliceSeason(request, response, next) {
 async function getSliceYear(request, response, next) {
   try {
     const { location, variable, start, end } = request.query
-    const result = await services.yearSlice({
+    const result = await services.sliceYear({
       location,
       variable,
       start,

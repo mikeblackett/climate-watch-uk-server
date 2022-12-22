@@ -5,7 +5,7 @@ import jsend from '../utilities/jsend.js'
 async function getSnapshotMonth(request, response, next) {
   try {
     const { location, variable, month, year } = request.query
-    const result = await services.monthSnapshot({
+    const result = await services.snapshotMonth({
       location,
       variable,
       month,
@@ -20,7 +20,7 @@ async function getSnapshotMonth(request, response, next) {
 async function getSnapshotSeason(request, response, next) {
   try {
     const { location, variable, season, year } = request.query
-    const result = await services.seasonSnapshot({
+    const result = await services.snapshotSeason({
       location,
       variable,
       season,
@@ -35,7 +35,7 @@ async function getSnapshotSeason(request, response, next) {
 async function getSnapshotYear(request, response, next) {
   try {
     const { location, variable, year } = request.query
-    const result = await services.yearSnapshot({
+    const result = await services.snapshotYear({
       location,
       variable,
       year,

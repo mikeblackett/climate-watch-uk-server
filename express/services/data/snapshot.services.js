@@ -2,7 +2,7 @@ import db from '../../../database/index.js'
 
 const { Climate } = db.models
 
-function monthSnapshot({ month, year, location, variable }) {
+function snapshotMonth({ month, year, location, variable }) {
   const { ref } = Climate
   const query = Climate.query()
     .select(
@@ -21,7 +21,7 @@ function monthSnapshot({ month, year, location, variable }) {
   return query
 }
 
-function seasonSnapshot({ season, year, location, variable }) {
+function snapshotSeason({ season, year, location, variable }) {
   const { ref } = Climate
   const query = Climate.query()
     .select(
@@ -40,7 +40,7 @@ function seasonSnapshot({ season, year, location, variable }) {
   return query
 }
 
-function yearSnapshot({ year, location, variable }) {
+function snapshotYear({ year, location, variable }) {
   const { ref } = Climate
   const query = Climate.query()
     .select(ref('location_id'), ref('variable_id'), ref('year'))
@@ -53,4 +53,4 @@ function yearSnapshot({ year, location, variable }) {
   return query
 }
 
-export { monthSnapshot, seasonSnapshot, yearSnapshot }
+export { snapshotMonth, snapshotSeason, snapshotYear }
