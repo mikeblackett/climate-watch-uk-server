@@ -3,58 +3,55 @@ import db from '../../../database/index.js'
 
 const { Climate } = db.models
 
-function filterOrSelectVariable(query, variable) {
-  if (variable) {
-    query.modify('filterByVariable', variable)
-  } else {
-    query.select(ref('variable_id'))
-  }
-  return query
-}
-
-function monthSlice({ month, location, variable, start, end }) {
+function monthSlice({ month, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select([ref('year'), ref('value')])
-    .modify('rankByMonth')
+    .select([ref('location_id'), ref('year'), ref('month'), ref('value')])
+    .modify('rankByMonth', order)
     .modify('filterByLocation', location)
     .modify('filterByYearRange', [start, end])
-    .modify(filterOrSelectVariable, variable)
+    .orderBy(ref('year'))
   if (month) {
     query.modify('filterByMonth', month)
-  } else {
-    query.select(ref('month'))
+  }
+  if (variable) {
+    query.modify('filterByVariable', variable)
   }
   return query
 }
 
-function seasonSlice({ season, location, variable, start, end }) {
+function seasonSlice({ season, location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select(ref('season_year').as('year'))
+    .select([ref('location_id'), ref('season_year').as('year'), ref('season')])
     .modify('averageBySeason')
-    .modify('rankBySeasonAverage')
+    .modify('rankBySeasonAverage', order)
     .modify('filterByLocation', location)
     .modify('filterBySeasonYearRange', [start, end])
-    .modify(filterOrSelectVariable, variable)
+    .orderBy(ref('season_year'))
+
   if (season) {
     query.modify('filterBySeason', season)
-  } else {
-    query.select(ref('season'))
+  }
+  if (variable) {
+    query.modify('filterByVariable', variable)
   }
   return query
 }
 
-function yearSlice({ location, variable, start, end }) {
+function yearSlice({ location, variable, start, end, order }) {
   const { ref } = Climate
   const query = Climate.query()
-    .select(ref('year'))
+    .select([ref('location_id'), ref('year')])
     .modify('averageByYear')
-    .modify('rankByYearAverage')
+    .modify('rankByYearAverage', order)
     .modify('filterByLocation', location)
     .modify('filterByYearRange', [start, end])
-    .modify(filterOrSelectVariable, variable)
+    .orderBy(ref('year'))
+  if (variable) {
+    query.modify('filterByVariable', variable)
+  }
   return query
 }
 
-export { filterOrSelectVariable, monthSlice, seasonSlice, yearSlice }
+export { monthSlice, seasonSlice, yearSlice }

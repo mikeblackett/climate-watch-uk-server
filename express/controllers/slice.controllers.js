@@ -2,55 +2,51 @@ import * as services from '../services/data/slice.services.js'
 
 import jsend from '../utilities/jsend.js'
 
-async function getMonth(request, response, next) {
+async function getSliceMonth(request, response, next) {
   try {
     const { location, variable, month, start, end } = request.query
-    const list = await services.monthSlice({
+    const result = await services.monthSlice({
       location,
       variable,
       month,
       start,
       end,
     })
-    response.json(
-      jsend.success({ location, variable, start, end, month, list })
-    )
+    response.json(jsend.success({ result }))
   } catch (error) {
     next(error)
   }
 }
 
-async function getSeason(request, response, next) {
+async function getSliceSeason(request, response, next) {
   try {
     const { location, variable, season, start, end } = request.query
-    const list = await services.seasonSlice({
+    const result = await services.seasonSlice({
       location,
       variable,
       season,
       start,
       end,
     })
-    response.json(
-      jsend.success({ location, variable, start, end, season, list })
-    )
+    response.json(jsend.success({ result }))
   } catch (error) {
     next(error)
   }
 }
 
-async function getYear(request, response, next) {
+async function getSliceYear(request, response, next) {
   try {
     const { location, variable, start, end } = request.query
-    const list = await services.yearSlice({
+    const result = await services.yearSlice({
       location,
       variable,
       start,
       end,
     })
-    response.json(jsend.success({ location, start, end, variable, list }))
+    response.json(jsend.success({ result }))
   } catch (error) {
     next(error)
   }
 }
 
-export { getMonth, getSeason, getYear }
+export { getSliceMonth, getSliceSeason, getSliceYear }
