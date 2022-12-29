@@ -6,7 +6,7 @@ const { Climate } = db.models
 function aggregateMonth({ month, location, variable, start, end }) {
   const { ref } = Climate
   let query = Climate.query()
-    .select(ref('month'), ref('variable_id'))
+    .select([ref('location_id'), ref('variable_id'), ref('month')])
     .max('year as end')
     .min('year as start')
     .groupBy(ref('month'))
@@ -25,7 +25,7 @@ function aggregateMonth({ month, location, variable, start, end }) {
 function aggregateSeason({ season, location, variable, start, end }) {
   const { ref } = Climate
   let query = Climate.query()
-    .select(ref('season'), ref('variable_id'))
+    .select([ref('location_id'), ref('season'), ref('variable_id')])
     .max('year as end')
     .min('year as start')
     .groupBy(ref('season'))
@@ -46,7 +46,7 @@ function aggregateSeason({ season, location, variable, start, end }) {
 function aggregateYear({ location, variable, start, end } = {}) {
   const { ref } = Climate
   let query = Climate.query()
-    .select(ref('variable_id'))
+    .select([ref('location_id'), ref('variable_id')])
     .max('year as end')
     .min('year as start')
     .modify('average')
