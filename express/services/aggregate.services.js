@@ -1,5 +1,5 @@
 import { raw } from 'objection'
-import db from '../../../database/index.js'
+import db from '../../database/index.js'
 
 const { Climate } = db.models
 

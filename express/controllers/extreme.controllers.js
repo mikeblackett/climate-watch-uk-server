@@ -1,4 +1,4 @@
-import * as extremeServices from '../services/data/extreme.services.js'
+import * as extremeServices from '../services/extreme.services.js'
 
 import jsend from '../utilities/jsend.js'
 

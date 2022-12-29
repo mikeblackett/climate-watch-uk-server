@@ -1,4 +1,4 @@
-import * as rankServices from '../services/data/rank.services.js'
+import * as rankServices from '../services/rank.services.js'
 
 import jsend from '../utilities/jsend.js'
 

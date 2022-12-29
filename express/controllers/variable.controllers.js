@@ -1,4 +1,4 @@
-import * as variableServices from '../services/meta/variable.services.js'
+import * as variableServices from '../services/variable.services.js'
 import jsend from '../utilities/jsend.js'
 
 async function getAllVariables(request, response, next) {

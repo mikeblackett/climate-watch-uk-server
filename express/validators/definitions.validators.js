@@ -1,5 +1,5 @@
-import { getAllIds as getVariableIds } from '../services/meta/variable.services.js'
-import { getAllIds as getLocationIds } from '../services/meta/location.services.js'
+import { getAllIds as getVariableIds } from '../services/variable.services.js'
+import { getAllIds as getLocationIds } from '../services/location.services.js'
 
 const locationIds = await getLocationIds()
 const locationEnum = locationIds.reduce((p, c) => {

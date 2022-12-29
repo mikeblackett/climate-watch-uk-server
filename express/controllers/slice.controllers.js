@@ -1,4 +1,4 @@
-import * as services from '../services/data/slice.services.js'
+import * as services from '../services/slice.services.js'
 
 import jsend from '../utilities/jsend.js'
 

@@ -1,4 +1,4 @@
-import * as services from '../services/data/aggregate.services.js'
+import * as services from '../services/aggregate.services.js'
 
 import jsend from '../utilities/jsend.js'
 

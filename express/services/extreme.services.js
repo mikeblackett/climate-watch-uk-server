@@ -1,4 +1,4 @@
-import db from '../../../database/index.js'
+import db from '../../database/index.js'
 import { sliceMonth, sliceSeason, sliceYear } from './slice.services.js'
 
 const { Climate } = db.models

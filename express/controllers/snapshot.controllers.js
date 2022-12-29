@@ -1,4 +1,4 @@
-import * as services from '../services/data/snapshot.services.js'
+import * as services from '../services/snapshot.services.js'
 
 import jsend from '../utilities/jsend.js'
 
