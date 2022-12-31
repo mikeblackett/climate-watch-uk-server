@@ -30,7 +30,7 @@ function snapshotSeason({ season, year, location, variable }) {
       ref('season_year as year'),
       ref('season')
     )
-    .modify('averageBySeason')
+    .modify('aggregate', { method: 'avg', timeScale: 'season' })
     .modify('filterBySeasonYear', year)
     .modify('filterByLocation', location)
     .modify('filterBySeason', season)
@@ -44,7 +44,7 @@ function snapshotYear({ year, location, variable }) {
   const { ref } = Climate
   const query = Climate.query()
     .select(ref('location_id'), ref('variable_id'), ref('year'))
-    .modify('averageByYear')
+    .modify('aggregate', { method: 'avg', timeScale: 'year' })
     .modify('filterByYear', year)
     .modify('filterByLocation', location)
   if (variable) {

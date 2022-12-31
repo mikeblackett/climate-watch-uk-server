@@ -31,57 +31,64 @@ class Climate extends BaseModel {
 
   static get modifiers() {
     return {
-      average(query) {
+      minYear(query) {
         const { ref } = Climate
+        return query.min(ref('year'))
+      },
+      aggregate(query, { method = 'avg', timeScale = 'month' } = {}) {
+        const { ref } = Climate
+        const groupBy = [ref('variable_id'), ref('location_id')]
+        switch (timeScale) {
+          case 'month':
+            groupBy.push(ref('month'))
+            break
+          case 'season':
+            groupBy.push(ref('season'), ref('season_year'))
+            break
+          case 'year':
+            groupBy.push(ref('year'))
+            break
+        }
         return query
-          .select([raw(`round(avg(?), 2) as value`, [ref('value')])])
-          .groupBy([ref('variable_id'), ref('location_id')])
+          .select([raw(`round(${method}(?), 2) as value`, [ref('value')])])
+          .groupBy(groupBy)
       },
-      averageByYear(query) {
+      rank(
+        query,
+        { order = 'desc', aggregation = 'avg', timeScale = 'month' } = {}
+      ) {
         const { ref } = Climate
-        return query.modify('average').groupBy([ref('year')])
-      },
-      rankByYearAverage(query, order = 'desc') {
-        const { ref } = Climate
-        return query.select(
-          raw(
-            `dense_rank() over (partition by ?, ? order by avg(?) ${order}) as rank`,
-            [ref('variable_id'), ref('location_id'), ref('value')]
+        const partitionBy = [
+          ref('variable_id'),
+          ref('location_id'),
+          ref('value'),
+        ]
+        if (timeScale === 'month') {
+          partitionBy.unshift(ref('month'))
+          return query.select(
+            raw(
+              `dense_rank() over (partition by ?, ?, ? order by ? ${order}) as rank`,
+              partitionBy
+            )
           )
-        )
-      },
-      averageByMonth(query) {
-        const { ref } = Climate
-        return query.modify('average').groupBy([ref('month')])
-      },
-      rankByMonth(query, order = 'desc') {
-        const { ref } = Climate
-        return query.select(
-          raw(
-            `dense_rank() over (partition by ?, ?, ? order by ? ${order}) as rank`,
-            [ref('month'), ref('variable_id'), ref('location_id'), ref('value')]
+        }
+        if (timeScale === 'season') {
+          partitionBy.unshift(ref('season'))
+          return query.select(
+            raw(
+              `dense_rank() over (partition by ?, ?, ? order by ${aggregation}(?) ${order}) as rank`,
+              partitionBy
+            )
           )
-        )
-      },
-      averageBySeason(query) {
-        const { ref } = Climate
-        return query
-          .modify('average')
-          .groupBy([ref('season'), ref('season_year')])
-      },
-      rankBySeasonAverage(query, order = 'desc') {
-        const { ref } = Climate
-        return query.select(
-          raw(
-            `dense_rank() over (partition by ?, ?, ? order by avg(?) ${order}) as rank`,
-            [
-              ref('season'),
-              ref('variable_id'),
-              ref('location_id'),
-              ref('value'),
-            ]
+        }
+        if (timeScale === 'year') {
+          return query.select(
+            raw(
+              `dense_rank() over (partition by ?, ? order by ${aggregation}(?) ${order}) as rank`,
+              partitionBy
+            )
           )
-        )
+        }
       },
       filterByLocation(query, conditions) {
         const { ref } = Climate
